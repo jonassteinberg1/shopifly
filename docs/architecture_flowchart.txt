@@ -87,7 +87,7 @@
 ================================================================================
 
   Reddit Impact:
-  - ~500 read-only API calls per week
+  - ~20 read-only API calls per week
   - No posting, commenting, or voting
   - 1 second delay between requests
   - Only public post content collected
