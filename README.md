@@ -1,6 +1,6 @@
 # Shopifly
 
-[![Tests](https://github.com/jonassteinberg1/shopifly/actions/workflows/tests.yml/badge.svg)](https://github.com/jonassteinberg1/shopifly/actions/workflows/tests.yml)
+[![Tests](https://github.com/jonassteinberg1/shopifly/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/jonassteinberg1/shopifly/actions/workflows/tests.yml)
 
 Shopify merchant pain point analyzer - scrape, classify, and identify app opportunities.
 
