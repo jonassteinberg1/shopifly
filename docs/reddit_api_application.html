@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Shopifly - Reddit API Application</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; line-height: 1.6; color: #333; }
+        h1 { color: #ff4500; border-bottom: 3px solid #ff4500; padding-bottom: 10px; }
+        h2 { color: #1a1a1b; margin-top: 30px; }
+        table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background: #f6f7f8; }
+        code { background: #f6f7f8; padding: 2px 6px; border-radius: 3px; font-size: 14px; }
+        pre { background: #1a1a1b; color: #d4d4d4; padding: 15px; border-radius: 5px; overflow-x: auto; }
+        .highlight { background: #fff3cd; padding: 15px; border-left: 4px solid #ffc107; margin: 20px 0; }
+        .success { background: #d4edda; padding: 15px; border-left: 4px solid #28a745; margin: 20px 0; }
+        .flowchart { background: #f6f7f8; padding: 20px; border-radius: 5px; font-family: monospace; white-space: pre; font-size: 12px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+
+<h1>Shopifly - Reddit API Application</h1>
+
+<p><strong>Repository:</strong> <a href="https://github.com/jonassteinberg1/shopifly">github.com/jonassteinberg1/shopifly</a></p>
+
+<h2>Project Overview</h2>
+<p><strong>Shopifly</strong> is a market research tool that identifies pain points experienced by Shopify merchants. By analyzing public Reddit discussions, we discover gaps in the Shopify app ecosystem where new tools could help small business owners.</p>
+
+<h2>What We Do</h2>
+<table>
+    <tr><th>Step</th><th>Description</th><th>Reddit Impact</th></tr>
+    <tr><td>1. Search</td><td>Query 5 subreddits for Shopify-related posts</td><td>~100 API calls/week</td></tr>
+    <tr><td>2. Filter</td><td>Keep only posts mentioning pain points</td><td>Read-only, no writes</td></tr>
+    <tr><td>3. Store</td><td>Save to local SQLite database</td><td>Data stays private</td></tr>
+    <tr><td>4. Analyze</td><td>Use AI to categorize problems</td><td>Off-platform processing</td></tr>
+    <tr><td>5. Build</td><td>Create apps solving top problems</td><td>Benefits merchant community</td></tr>
+</table>
+
+<h2>Data Collection</h2>
+<div class="success">
+    <strong>What We Collect (Public Only):</strong>
+    <ul>
+        <li>Post title and body text</li>
+        <li>Subreddit name</li>
+        <li>Post score and comment count</li>
+        <li>Post permalink</li>
+    </ul>
+</div>
+
+<div class="highlight">
+    <strong>What We Do NOT Collect:</strong>
+    <ul>
+        <li>Private messages</li>
+        <li>User profile information</li>
+        <li>Comment histories</li>
+        <li>Any non-public content</li>
+    </ul>
+</div>
+
+<h2>Technical Specifications</h2>
+<table>
+    <tr><th>Specification</th><th>Value</th></tr>
+    <tr><td>API Library</td><td>PRAW (Python Reddit API Wrapper)</td></tr>
+    <tr><td>Access Type</td><td>Read-only (no posting/commenting/voting)</td></tr>
+    <tr><td>Rate Limiting</td><td>1+ second delay between requests</td></tr>
+    <tr><td>Frequency</td><td>1-2 manual runs per week</td></tr>
+    <tr><td>Max Posts/Run</td><td>~500 across all subreddits</td></tr>
+    <tr><td>Storage</td><td>Local SQLite (private, never shared)</td></tr>
+</table>
+
+<h2>Target Subreddits</h2>
+<ol>
+    <li><strong>r/shopify</strong> - Primary source for merchant feedback</li>
+    <li><strong>r/ecommerce</strong> - General e-commerce discussions</li>
+    <li><strong>r/dropship</strong> - Dropshipping community</li>
+    <li><strong>r/smallbusiness</strong> - Small business owner perspectives</li>
+    <li><strong>r/Entrepreneur</strong> - Entrepreneurial insights</li>
+</ol>
+
+<h2>Architecture Flowchart</h2>
+<div class="flowchart">
+Reddit (5 subreddits)
+        │
+        ▼ Search API (read-only)
+        │
+┌───────────────────┐
+│  Shopifly Scraper │
+│  - Rate limited   │
+│  - Pain filtering │
+│  - Data extract   │
+└─────────┬─────────┘
+          │
+          ▼
+┌───────────────────┐
+│  Local SQLite DB  │
+│  (private storage)│
+└─────────┬─────────┘
+          │
+          ▼
+┌───────────────────┐
+│  Claude AI        │
+│  (categorization) │
+└─────────┬─────────┘
+          │
+          ▼
+┌───────────────────┐
+│  Pain Point       │
+│  Rankings         │
+└─────────┬─────────┘
+          │
+          ▼
+   Build Better Apps
+   for Merchants
+</div>
+
+<h2>Example Output</h2>
+<pre>
+Category: Inventory Management
+Frequency: 47 mentions
+Sample Quote: "Syncing inventory between Shopify and Amazon is a nightmare"
+Frustration Level: High (4.2/5)
+Willingness to Pay: Yes (73% mention budget)
+
+Category: Analytics
+Frequency: 38 mentions
+Sample Quote: "Built-in analytics are useless for conversion tracking"
+Frustration Level: Medium-High (3.8/5)
+Willingness to Pay: Yes (68% mention paying for solutions)
+</pre>
+
+<h2>Benefits to Reddit Community</h2>
+<ol>
+    <li><strong>Merchants get heard</strong> - Their complaints drive real product development</li>
+    <li><strong>Better apps exist</strong> - We build solutions for actual problems</li>
+    <li><strong>No spam</strong> - We're silent observers, not marketers</li>
+    <li><strong>Future surveys</strong> - We'll ask r/shopify to vote on priorities</li>
+</ol>
+
+<hr>
+<p><em>We're happy to answer any questions or adjust our usage to comply with Reddit's requirements.</em></p>
+<p><strong>Repository:</strong> <a href="https://github.com/jonassteinberg1/shopifly">https://github.com/jonassteinberg1/shopifly</a></p>
+
+</body>
+</html>

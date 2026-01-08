@@ -1,0 +1,101 @@
+================================================================================
+                    SHOPIFLY - DATA FLOW ARCHITECTURE
+================================================================================
+
+
+    ┌─────────────────────────────────────────────────────────────────────┐
+    │                         REDDIT (Read-Only)                          │
+    │                                                                     │
+    │   r/shopify    r/ecommerce    r/dropship    r/smallbusiness        │
+    │       │             │             │              │                  │
+    │       └─────────────┴──────┬──────┴──────────────┘                  │
+    │                            │                                        │
+    │                    Search API Queries                               │
+    │              "shopify problem", "shopify help"                      │
+    └────────────────────────────┬────────────────────────────────────────┘
+                                 │
+                                 ▼
+    ┌─────────────────────────────────────────────────────────────────────┐
+    │                      SHOPIFLY SCRAPER                               │
+    │                                                                     │
+    │   ┌──────────────┐    ┌──────────────┐    ┌──────────────┐         │
+    │   │ Rate Limiter │───▶│Pain Keyword  │───▶│  Data        │         │
+    │   │ (1 sec/req)  │    │Filter        │    │  Extractor   │         │
+    │   └──────────────┘    └──────────────┘    └──────────────┘         │
+    │                                                  │                  │
+    │   Collected: title, body, score, url, subreddit  │                  │
+    │   NOT collected: user profiles, PMs, PII         │                  │
+    └──────────────────────────────────────────────────┬──────────────────┘
+                                                       │
+                                                       ▼
+    ┌─────────────────────────────────────────────────────────────────────┐
+    │                    LOCAL STORAGE (SQLite)                           │
+    │                                                                     │
+    │   ┌─────────────────────────────────────────────────────────┐      │
+    │   │ raw_sources table                                        │      │
+    │   │ - source_id: "reddit_post_abc123"                       │      │
+    │   │ - content: "Inventory sync is broken..."                │      │
+    │   │ - subreddit: "shopify"                                  │      │
+    │   │ - score: 45                                             │      │
+    │   └─────────────────────────────────────────────────────────┘      │
+    │                                                                     │
+    │   Data is PRIVATE, stored locally, NEVER shared or sold            │
+    └──────────────────────────────────────────────────┬──────────────────┘
+                                                       │
+                                                       ▼
+    ┌─────────────────────────────────────────────────────────────────────┐
+    │                   ANTHROPIC CLAUDE AI (Off-Platform)                │
+    │                                                                     │
+    │   Input: "Inventory sync between Shopify and Amazon is broken"     │
+    │                                                                     │
+    │   Output:                                                           │
+    │   ┌─────────────────────────────────────────────────────────┐      │
+    │   │ - Category: "Inventory Management"                       │      │
+    │   │ - Frustration Level: 4/5                                │      │
+    │   │ - Willingness to Pay: Yes                               │      │
+    │   │ - Keywords: ["inventory", "sync", "amazon"]             │      │
+    │   └─────────────────────────────────────────────────────────┘      │
+    └──────────────────────────────────────────────────┬──────────────────┘
+                                                       │
+                                                       ▼
+    ┌─────────────────────────────────────────────────────────────────────┐
+    │                      AGGREGATION & RANKING                          │
+    │                                                                     │
+    │   ┌────────────────────────────────────────────────────────────┐   │
+    │   │  #1  Inventory Management    47 mentions   Score: 85/100   │   │
+    │   │  #2  Analytics               38 mentions   Score: 78/100   │   │
+    │   │  #3  Multi-channel Sync      29 mentions   Score: 72/100   │   │
+    │   │  #4  Shipping Labels         24 mentions   Score: 68/100   │   │
+    │   │  #5  Customer Support        21 mentions   Score: 61/100   │   │
+    │   └────────────────────────────────────────────────────────────┘   │
+    └──────────────────────────────────────────────────┬──────────────────┘
+                                                       │
+                                                       ▼
+    ┌─────────────────────────────────────────────────────────────────────┐
+    │                         OUTCOME                                     │
+    │                                                                     │
+    │   1. We identify top merchant pain points                          │
+    │   2. We build Shopify apps addressing real problems                │
+    │   3. Merchants (including Redditors) get better tools              │
+    │   4. Optional: Survey r/shopify for validation (following rules)   │
+    │                                                                     │
+    └─────────────────────────────────────────────────────────────────────┘
+
+
+================================================================================
+                              SUMMARY
+================================================================================
+
+  Reddit Impact:
+  - ~500 read-only API calls per week
+  - No posting, commenting, or voting
+  - 1 second delay between requests
+  - Only public post content collected
+
+  Data Privacy:
+  - All data stored locally
+  - Never shared or sold
+  - No PII collection
+  - No user tracking
+
+================================================================================
