@@ -1,0 +1,94 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./data:/app/data
+      - ./.env:/app/.env:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+    # Override entrypoint for development
+    entrypoint: ["python", "main.py"]
+    command: ["--help"]
+
+  # Development shell with all dependencies
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+      - ./data:/app/data
+    environment:
+      - PYTHONUNBUFFERED=1
+    entrypoint: ["/bin/bash"]
+    stdin_open: true
+    tty: true
+
+  # Run tests
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./data:/app/data
+    environment:
+      - PYTHONUNBUFFERED=1
+    entrypoint: ["pytest"]
+    command: ["-v", "--tb=short"]
+
+  # Reddit scraper service
+  scrape-reddit:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./data:/app/data
+      - ./.env:/app/.env:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+    entrypoint: ["python", "-c"]
+    command: |
+      from scrapers.reddit_selenium import scrape_reddit_simple
+      import json
+      posts = scrape_reddit_simple(limit=25)
+      print(json.dumps(posts, indent=2, default=str))
+    shm_size: '2gb'  # Needed for Chrome
+
+  # Shopify Community scraper service
+  scrape-community:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./data:/app/data
+      - ./.env:/app/.env:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+    entrypoint: ["python", "-c"]
+    command: |
+      import asyncio
+      import json
+      from scrapers.community import CommunityScraper
+
+      async def main():
+          scraper = CommunityScraper()
+          posts = []
+          async for post in scraper.scrape(limit=10):
+              posts.append({
+                  'title': post.title,
+                  'content': post.content[:500] + '...' if len(post.content) > 500 else post.content,
+                  'url': post.url,
+                  'author': post.author,
+                  'created_at': str(post.created_at),
+                  'metadata': post.metadata,
+              })
+              print(f"Scraped: {post.title[:60]}...")
+          await scraper.close()
+          print("\n" + "=" * 70)
+          print(json.dumps(posts, indent=2))
+
+      asyncio.run(main())
