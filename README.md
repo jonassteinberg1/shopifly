@@ -359,4 +359,4 @@ docker-compose run scrape-community
 
 ## License
 
-MIT
+Proprietary - All Rights Reserved. See [LICENSE](LICENSE) for details.
