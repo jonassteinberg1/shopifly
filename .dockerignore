@@ -1,0 +1,35 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+.eggs
+*.egg-info
+.pytest_cache
+.coverage
+htmlcov
+
+# Virtual environments
+venv
+.venv
+env
+
+# IDE
+.idea
+.vscode
+*.swp
+
+# Environment files (don't bake secrets into image)
+.env
+
+# Tests (optional - uncomment to include tests in image)
+# tests/
+
+# Documentation
+*.md
+!.env.example
