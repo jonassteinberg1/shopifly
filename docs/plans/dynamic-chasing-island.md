@@ -641,7 +641,6 @@ AIRTABLE_BASE_ID=xxx
 - Clustering/deduplication of similar problems
 - Profitability scoring
 - Scheduled/automated runs
-- Dashboard/visualization
 - Competition analysis
 
 ---
@@ -962,3 +961,468 @@ python main.py export --format csv --output reports/category_summary.csv
 | Processing speed | 100 items/minute with concurrency=5 |
 | Cost per 1000 items | < $2.00 |
 | Content type distribution | Complaints > 40%, Feature requests > 20% |
+
+---
+
+## Dashboard/Visualization UI
+
+### Overview
+
+A web-based dashboard to visualize insights from the scraping and classification pipeline. The dashboard provides actionable views of merchant pain points, trends, and opportunities.
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                       SHOPIFLY INSIGHTS DASHBOARD                            │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│  ┌─────────────────────────────────────────────────────────────────────────┐│
+│  │ HEADER: Filters & Controls                                              ││
+│  │ [Date Range: Last 30 days ▼] [Category: All ▼] [Source: All ▼] [Export] ││
+│  └─────────────────────────────────────────────────────────────────────────┘│
+│                                                                              │
+│  ┌──────────────────────┐ ┌──────────────────────┐ ┌──────────────────────┐ │
+│  │    TOTAL INSIGHTS    │ │   AVG FRUSTRATION    │ │     WTP RATE         │ │
+│  │        1,247         │ │        3.4/5         │ │       23.5%          │ │
+│  │     ▲ +156 (7d)      │ │     ▲ +0.2 (7d)      │ │     ▲ +2.1% (7d)     │ │
+│  └──────────────────────┘ └──────────────────────┘ └──────────────────────┘ │
+│                                                                              │
+│  ┌────────────────────────────────────┐ ┌────────────────────────────────┐  │
+│  │     INSIGHTS BY CATEGORY           │ │      TRENDS OVER TIME          │  │
+│  │                                    │ │                                │  │
+│  │  inventory     ████████████ 234    │ │     ╭───────────────────╮     │  │
+│  │  analytics     ██████████ 198      │ │    ╱                     ╲    │  │
+│  │  shipping      ████████ 167        │ │   ╱                       ╲   │  │
+│  │  payments      ███████ 145         │ │  ╱                         ╲  │  │
+│  │  marketing     ██████ 123          │ │ ╱                           ─ │  │
+│  │  other         █████ 112           │ │ W1  W2  W3  W4  W5  W6  W7   │  │
+│  │                                    │ │                                │  │
+│  └────────────────────────────────────┘ └────────────────────────────────┘  │
+│                                                                              │
+│  ┌────────────────────────────────────┐ ┌────────────────────────────────┐  │
+│  │     KEYWORD CLOUD                  │ │   COMPETITOR MENTIONS          │  │
+│  │                                    │ │                                │  │
+│  │      inventory    SYNC             │ │  Oberlo      ████████ 45      │  │
+│  │   tracking  ORDERS   slow          │ │  Klaviyo     ██████ 34        │  │
+│  │     CSV     EXPORT   bulk          │ │  Loox        █████ 28         │  │
+│  │   analytics   REPORTS              │ │  Judge.me    ████ 22          │  │
+│  │      shipping   RATES              │ │  Privy       ███ 18           │  │
+│  │                                    │ │                                │  │
+│  └────────────────────────────────────┘ └────────────────────────────────┘  │
+│                                                                              │
+│  ┌─────────────────────────────────────────────────────────────────────────┐│
+│  │ TOP OPPORTUNITIES                                                 [▼]  ││
+│  ├─────────────────────────────────────────────────────────────────────────┤│
+│  │ Rank │ Problem                          │ Category  │ Frust │ WTP │ Score│
+│  ├──────┼──────────────────────────────────┼───────────┼───────┼─────┼──────┤│
+│  │  1   │ Inventory sync with suppliers    │ inventory │  4.8  │ Yes │ 92.3 ││
+│  │  2   │ Multi-location stock tracking    │ inventory │  4.5  │ Yes │ 88.7 ││
+│  │  3   │ Real-time analytics dashboard    │ analytics │  4.2  │ Yes │ 85.2 ││
+│  │  4   │ Bulk order export to CSV         │ admin     │  4.0  │ No  │ 78.4 ││
+│  │  5   │ Shipping rate comparison         │ shipping  │  3.9  │ Yes │ 76.1 ││
+│  └─────────────────────────────────────────────────────────────────────────┘│
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Technology Choice
+
+**Recommended: Streamlit** (for rapid development)
+
+| Option | Pros | Cons | Effort |
+|--------|------|------|--------|
+| **Streamlit** | Fast to build, Python-native, built-in charts, easy deployment | Less customizable, heavier runtime | 1-2 days |
+| HTML + Chart.js | Lightweight, fully customizable, static hosting | More code, need API layer | 3-4 days |
+| React + Recharts | Most flexible, professional look | Heaviest, requires build pipeline | 5-7 days |
+
+**Decision: Use Streamlit** for V1, migrate to React if needed later.
+
+### Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                        DASHBOARD ARCHITECTURE                                │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│  ┌──────────────────┐      ┌──────────────────┐      ┌──────────────────┐   │
+│  │   Streamlit UI   │ ───► │   Data Layer     │ ───► │   SQLite DB      │   │
+│  │                  │      │                  │      │                  │   │
+│  │  - Charts        │      │  - Queries       │      │  - insights      │   │
+│  │  - Tables        │      │  - Aggregations  │      │  - raw_sources   │   │
+│  │  - Filters       │      │  - Caching       │      │  - interviews    │   │
+│  │  - Export        │      │                  │      │                  │   │
+│  └──────────────────┘      └──────────────────┘      └──────────────────┘   │
+│                                                                              │
+│  dashboard/                                                                  │
+│  ├── app.py          # Main Streamlit application                           │
+│  ├── data.py         # Data fetching and caching                            │
+│  ├── charts.py       # Chart generation helpers                             │
+│  └── config.py       # Dashboard configuration                              │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Dashboard Components
+
+#### 1. Overview Metrics Cards
+
+```python
+# Key metrics displayed at top of dashboard
+OVERVIEW_METRICS = [
+    {
+        "name": "Total Insights",
+        "query": "SELECT COUNT(*) FROM insights",
+        "format": "{:,}",
+        "delta_query": "SELECT COUNT(*) FROM insights WHERE classified_at > datetime('now', '-7 days')"
+    },
+    {
+        "name": "Avg Frustration",
+        "query": "SELECT AVG(frustration_level) FROM insights",
+        "format": "{:.1f}/5",
+        "delta_query": "..."
+    },
+    {
+        "name": "WTP Rate",
+        "query": "SELECT AVG(CASE WHEN willingness_to_pay THEN 1.0 ELSE 0.0 END) * 100 FROM insights",
+        "format": "{:.1f}%",
+        "delta_query": "..."
+    },
+    {
+        "name": "Categories",
+        "query": "SELECT COUNT(DISTINCT category) FROM insights",
+        "format": "{}",
+        "delta_query": None
+    }
+]
+```
+
+#### 2. Category Breakdown (Bar Chart)
+
+```python
+CATEGORY_CHART_QUERY = """
+SELECT
+    category,
+    COUNT(*) as count,
+    AVG(frustration_level) as avg_frustration,
+    SUM(CASE WHEN willingness_to_pay THEN 1 ELSE 0 END) as wtp_count
+FROM insights
+WHERE classified_at >= :start_date AND classified_at <= :end_date
+GROUP BY category
+ORDER BY count DESC
+"""
+```
+
+#### 3. Trends Over Time (Line Chart)
+
+```python
+TRENDS_CHART_QUERY = """
+SELECT
+    strftime('%Y-%W', classified_at) as week,
+    COUNT(*) as count,
+    AVG(frustration_level) as avg_frustration
+FROM insights
+WHERE classified_at >= :start_date
+GROUP BY week
+ORDER BY week
+"""
+```
+
+#### 4. Keyword Cloud
+
+```python
+KEYWORD_CLOUD_QUERY = """
+SELECT
+    value as keyword,
+    COUNT(*) as frequency
+FROM insights, json_each(insights.keywords)
+WHERE classified_at >= :start_date AND classified_at <= :end_date
+GROUP BY value
+ORDER BY frequency DESC
+LIMIT 50
+"""
+```
+
+#### 5. Competitor Mentions (Bar Chart)
+
+```python
+COMPETITOR_CHART_QUERY = """
+SELECT
+    value as competitor,
+    COUNT(*) as mentions,
+    AVG(frustration_level) as context_frustration
+FROM insights, json_each(insights.competitor_mentions)
+WHERE value != '' AND classified_at >= :start_date
+GROUP BY value
+ORDER BY mentions DESC
+LIMIT 10
+"""
+```
+
+#### 6. Top Opportunities Table
+
+```python
+OPPORTUNITIES_QUERY = """
+SELECT
+    i.problem_statement,
+    i.category,
+    i.frustration_level,
+    i.willingness_to_pay,
+    i.urgency_score,
+    i.source_url,
+    -- Calculate priority score
+    (i.frustration_level * 0.25 +
+     i.urgency_score * 0.20 +
+     CASE WHEN i.willingness_to_pay THEN 0.20 ELSE 0 END +
+     i.clarity_score * 0.10) * 100 as priority_score
+FROM insights i
+WHERE classified_at >= :start_date AND classified_at <= :end_date
+ORDER BY priority_score DESC
+LIMIT :limit
+"""
+```
+
+### Filters
+
+```python
+# Filter configuration
+FILTERS = {
+    "date_range": {
+        "type": "date_range",
+        "default": ("30 days ago", "today"),
+        "options": ["7 days", "30 days", "90 days", "All time", "Custom"]
+    },
+    "category": {
+        "type": "multiselect",
+        "query": "SELECT DISTINCT category FROM insights ORDER BY category",
+        "default": "All"
+    },
+    "source": {
+        "type": "multiselect",
+        "options": ["reddit", "appstore", "community", "twitter", "interview"],
+        "default": "All"
+    },
+    "min_frustration": {
+        "type": "slider",
+        "min": 1,
+        "max": 5,
+        "default": 1
+    },
+    "content_type": {
+        "type": "multiselect",
+        "options": ["complaint", "feature_request", "question", "comparison", "review", "workaround"],
+        "default": "All"
+    }
+}
+```
+
+### Export Functionality
+
+```python
+EXPORT_OPTIONS = {
+    "csv": {
+        "description": "Export filtered insights as CSV",
+        "function": "export_csv",
+        "filename": "shopifly_insights_{date}.csv"
+    },
+    "json": {
+        "description": "Export filtered insights as JSON",
+        "function": "export_json",
+        "filename": "shopifly_insights_{date}.json"
+    },
+    "report": {
+        "description": "Generate PDF summary report",
+        "function": "generate_pdf_report",
+        "filename": "shopifly_report_{date}.pdf"
+    }
+}
+```
+
+### Implementation: `dashboard/app.py`
+
+```python
+"""
+Shopifly Insights Dashboard
+
+Run with: streamlit run dashboard/app.py
+"""
+import streamlit as st
+import pandas as pd
+import plotly.express as px
+from datetime import datetime, timedelta
+
+from dashboard.data import DashboardData
+from dashboard.charts import (
+    create_category_chart,
+    create_trends_chart,
+    create_keyword_cloud,
+    create_competitor_chart
+)
+
+# Page config
+st.set_page_config(
+    page_title="Shopifly Insights",
+    page_icon="🛒",
+    layout="wide"
+)
+
+# Initialize data layer
+@st.cache_resource
+def get_data():
+    return DashboardData()
+
+data = get_data()
+
+# Header
+st.title("🛒 Shopifly Insights Dashboard")
+
+# Filters sidebar
+with st.sidebar:
+    st.header("Filters")
+
+    date_range = st.selectbox(
+        "Date Range",
+        ["Last 7 days", "Last 30 days", "Last 90 days", "All time"]
+    )
+
+    categories = st.multiselect(
+        "Categories",
+        options=data.get_categories(),
+        default=[]
+    )
+
+    sources = st.multiselect(
+        "Sources",
+        options=["reddit", "appstore", "community", "twitter", "interview"],
+        default=[]
+    )
+
+    min_frustration = st.slider(
+        "Min Frustration Level",
+        min_value=1, max_value=5, value=1
+    )
+
+# Build filter params
+filters = {
+    "date_range": date_range,
+    "categories": categories or None,
+    "sources": sources or None,
+    "min_frustration": min_frustration
+}
+
+# Overview metrics
+col1, col2, col3, col4 = st.columns(4)
+
+metrics = data.get_overview_metrics(filters)
+
+with col1:
+    st.metric("Total Insights", f"{metrics['total']:,}", f"+{metrics['total_delta']} (7d)")
+with col2:
+    st.metric("Avg Frustration", f"{metrics['avg_frustration']:.1f}/5")
+with col3:
+    st.metric("WTP Rate", f"{metrics['wtp_rate']:.1f}%")
+with col4:
+    st.metric("Categories", metrics['category_count'])
+
+# Charts row 1
+col1, col2 = st.columns(2)
+
+with col1:
+    st.subheader("Insights by Category")
+    category_data = data.get_category_breakdown(filters)
+    fig = create_category_chart(category_data)
+    st.plotly_chart(fig, use_container_width=True)
+
+with col2:
+    st.subheader("Trends Over Time")
+    trends_data = data.get_trends(filters)
+    fig = create_trends_chart(trends_data)
+    st.plotly_chart(fig, use_container_width=True)
+
+# Charts row 2
+col1, col2 = st.columns(2)
+
+with col1:
+    st.subheader("Keyword Cloud")
+    keyword_data = data.get_keywords(filters)
+    fig = create_keyword_cloud(keyword_data)
+    st.plotly_chart(fig, use_container_width=True)
+
+with col2:
+    st.subheader("Competitor Mentions")
+    competitor_data = data.get_competitors(filters)
+    fig = create_competitor_chart(competitor_data)
+    st.plotly_chart(fig, use_container_width=True)
+
+# Top opportunities table
+st.subheader("Top Opportunities")
+opportunities = data.get_opportunities(filters, limit=20)
+st.dataframe(
+    opportunities,
+    column_config={
+        "problem_statement": st.column_config.TextColumn("Problem", width="large"),
+        "category": st.column_config.TextColumn("Category"),
+        "frustration_level": st.column_config.NumberColumn("Frustration", format="%.1f"),
+        "willingness_to_pay": st.column_config.CheckboxColumn("WTP"),
+        "priority_score": st.column_config.ProgressColumn("Score", min_value=0, max_value=100),
+        "source_url": st.column_config.LinkColumn("Source")
+    },
+    hide_index=True,
+    use_container_width=True
+)
+
+# Export section
+st.sidebar.divider()
+st.sidebar.header("Export")
+
+if st.sidebar.button("Export CSV"):
+    csv = data.export_csv(filters)
+    st.sidebar.download_button(
+        label="Download CSV",
+        data=csv,
+        file_name=f"shopifly_insights_{datetime.now():%Y%m%d}.csv",
+        mime="text/csv"
+    )
+```
+
+### CLI Integration
+
+```bash
+# Start dashboard server
+python main.py dashboard
+
+# Or directly with Streamlit
+streamlit run dashboard/app.py --server.port 8501
+
+# Dashboard with custom database
+python main.py dashboard --db ./data/custom.db --port 8502
+```
+
+### Files to Create
+
+| File | Description |
+|------|-------------|
+| `dashboard/__init__.py` | Package init |
+| `dashboard/app.py` | Main Streamlit application |
+| `dashboard/data.py` | Data fetching and caching layer |
+| `dashboard/charts.py` | Plotly chart generation helpers |
+| `dashboard/config.py` | Dashboard configuration |
+
+### Files to Modify
+
+| File | Changes |
+|------|---------|
+| `main.py` | Add `dashboard` command |
+| `pyproject.toml` | Add `streamlit`, `plotly` dependencies |
+| `Dockerfile` | Expose port 8501, add streamlit command |
+| `README.md` | Document dashboard usage |
+
+### Success Criteria
+
+| Metric | Target |
+|--------|--------|
+| Dashboard loads | < 3 seconds initial load |
+| Chart render time | < 500ms per chart |
+| All 6 visualizations work | 100% functional |
+| Filters apply correctly | Results update on filter change |
+| Export works | Valid CSV/JSON generated |
+| Responsive layout | Works on 1280px+ screens |
+| Docker deployment | Dashboard runs in container |

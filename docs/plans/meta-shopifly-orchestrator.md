@@ -14,6 +14,7 @@
 |-----|------|-------|--------|
 | **Scraping Pipeline** | `.claude/plans/dynamic-chasing-island.md` | Web scraping + LLM classification | ~85% complete |
 | **Interview Research** | `.claude/plans/refactored-wobbling-quokka.md` | Merchant interviews + validation | Code: 100%, Process: 0% |
+| **Visualization Dashboard** | `.claude/plans/dynamic-chasing-island.md` | Dashboard UI for insights visualization | 0% - NEW |
 
 ---
 
@@ -81,6 +82,17 @@
 │                 │            Interview Bonus (35%)        │                 │
 │                 │                                         │                 │
 │                 │  Output: Ranked Product Opportunities   │                 │
+│                 └─────────────────┬───────────────────────┘                 │
+│                                   │                                         │
+│                                   ▼                                         │
+│                 ┌─────────────────────────────────────────┐                 │
+│                 │        VISUALIZATION DASHBOARD           │                 │
+│                 │                                         │                 │
+│                 │  - Category breakdown charts            │                 │
+│                 │  - Frustration trends over time         │                 │
+│                 │  - Top opportunities table              │                 │
+│                 │  - Keyword cloud visualization          │                 │
+│                 │  - Competitor mention analysis          │                 │
 │                 └─────────────────────────────────────────┘                 │
 │                                                                              │
 └─────────────────────────────────────────────────────────────────────────────┘
@@ -97,10 +109,10 @@ Tasks are organized into **independent tracks** that can run simultaneously, wit
 **Note:** Reddit scraping (A1) is COMPLETE via RSS approach. Do not implement JSON API approach.
 
 ```
-TIME ──────────────────────────────────────────────────────────────────────►
+TIME ──────────────────────────────────────────────────────────────────────────────────────►
 
-TRACK A (Scraping/Classification)   TRACK B (Interview)    TRACK C (Testing)
-═════════════════════════════════   ═══════════════════    ═══════════════════
+TRACK A (Scraping/Classification)   TRACK B (Interview)    TRACK C (Testing)    TRACK E (Visualization)
+═════════════════════════════════   ═══════════════════    ═══════════════════  ═══════════════════════
 
 [A1] Reddit RSS ✅                  [B1] Additional CLI    [C1] Unit Tests
      (DONE)                              Commands               for A2, A3
@@ -123,11 +135,18 @@ TRACK A (Scraping/Classification)   TRACK B (Interview)    TRACK C (Testing)
                                 [SYNC] E2E Pipeline Test
                                 ═══════════════════════
                                            │
-                                           ▼
-                                [D1] Documentation Update
-                                           │
-                                           ▼
-                                [D2] Docker Verification
+                                           ├───────────────────────────────────┐
+                                           ▼                                   ▼
+                                [D1] Documentation Update            [E1] Dashboard Backend
+                                           │                              API endpoints
+                                           ▼                                   │
+                                [D2] Docker Verification                       ▼
+                                                                     [E2] Dashboard Frontend
+                                                                          Charts & UI
+                                                                               │
+                                                                               ▼
+                                                                     [E3] Dashboard Polish
+                                                                          Filters & Export
 ```
 
 ---
@@ -373,6 +392,115 @@ Test full pipeline with REAL Reddit data (small limit):
 
 ---
 
+### Track E: Visualization Dashboard
+
+#### E1: Dashboard Backend API [PRIORITY: MEDIUM]
+**PRD Reference:** `dynamic-chasing-island.md` → Section "Dashboard/Visualization UI"
+
+**Agent Instructions:**
+```
+READ: .claude/plans/dynamic-chasing-island.md (Section: Dashboard/Visualization UI)
+
+Create REST API endpoints to serve aggregated data for the dashboard:
+1. GET /api/insights/summary - Category counts, avg frustration, WTP rates
+2. GET /api/insights/trends - Time series data (weekly/monthly)
+3. GET /api/insights/keywords - Keyword frequency for word cloud
+4. GET /api/insights/competitors - Competitor mention analysis
+5. GET /api/insights/opportunities - Top ranked opportunities
+6. GET /api/insights/export - Export data as CSV/JSON
+```
+
+**Files to Create:**
+- `api/__init__.py` - API package
+- `api/routes.py` - FastAPI/Flask routes for dashboard endpoints
+- `api/schemas.py` - Pydantic response schemas
+
+**Completion Criteria:**
+- [ ] All 6 API endpoints implemented
+- [ ] Endpoints return properly formatted JSON
+- [ ] Filtering by date range works
+- [ ] Export endpoint generates valid CSV
+
+---
+
+#### E2: Dashboard Frontend UI [PRIORITY: MEDIUM]
+**PRD Reference:** `dynamic-chasing-island.md` → Section "Dashboard/Visualization UI"
+
+**Agent Instructions:**
+```
+Build a simple web dashboard using a lightweight approach (HTML + Chart.js or Streamlit):
+
+OPTION A - Streamlit (Recommended for speed):
+- Single Python file dashboard
+- Built-in charts and tables
+- Easy deployment
+
+OPTION B - HTML + Chart.js:
+- Static HTML served by FastAPI
+- Chart.js for visualizations
+- More customizable
+
+Dashboard Pages/Sections:
+1. Overview - Key metrics cards (total insights, categories, avg frustration)
+2. Category Breakdown - Bar chart of insights by category
+3. Trends - Line chart of insights over time
+4. Word Cloud - Keyword frequency visualization
+5. Top Opportunities - Sortable table of ranked opportunities
+6. Competitor Analysis - Bar chart of competitor mentions
+```
+
+**Files to Create (Streamlit approach):**
+- `dashboard/app.py` - Main Streamlit dashboard
+- `dashboard/charts.py` - Chart generation helpers
+- `dashboard/data.py` - Data fetching from SQLite
+
+**Files to Create (HTML approach):**
+- `dashboard/static/index.html` - Dashboard HTML
+- `dashboard/static/js/charts.js` - Chart.js visualizations
+- `dashboard/static/css/style.css` - Dashboard styling
+
+**Completion Criteria:**
+- [ ] Dashboard displays all 6 visualization types
+- [ ] Data loads from SQLite correctly
+- [ ] Charts render without errors
+- [ ] Basic responsive layout works
+
+---
+
+#### E3: Dashboard Polish & Export [PRIORITY: LOW]
+**PRD Reference:** `dynamic-chasing-island.md` → Section "Dashboard/Visualization UI"
+
+**Agent Instructions:**
+```
+Add filtering, interactivity, and export features:
+
+1. Filters:
+   - Date range picker
+   - Category filter (multi-select)
+   - Source filter (Reddit, App Store, etc.)
+   - Minimum frustration level slider
+
+2. Interactivity:
+   - Click on chart segment to drill down
+   - Hover tooltips with details
+   - Sortable table columns
+
+3. Export:
+   - Export filtered data as CSV
+   - Export charts as PNG
+   - Generate PDF report
+```
+
+**Files to Modify:**
+- `dashboard/app.py` or `dashboard/static/js/charts.js`
+
+**Completion Criteria:**
+- [ ] All filters work correctly
+- [ ] CSV export includes filtered data
+- [ ] Charts are interactive (hover, click)
+
+---
+
 ### Track D: Documentation & Deployment
 
 #### D1: Documentation Update [PRIORITY: MEDIUM]
@@ -519,11 +647,22 @@ Verify Docker build with new components:
 - [ ] **D1** Update README.md with classification pipeline docs
 - [ ] **D2** Verify Docker build and run
 
-### Phase 7: Final Verification
+### Phase 7: Visualization Dashboard
+- [ ] **E1** Create `api/__init__.py` - API package init
+- [ ] **E1** Create `api/routes.py` - Dashboard API endpoints
+- [ ] **E1** Create `api/schemas.py` - Response schemas
+- [ ] **E2** Create `dashboard/app.py` - Streamlit dashboard (or HTML alternative)
+- [ ] **E2** Create `dashboard/charts.py` - Chart generation helpers
+- [ ] **E2** Create `dashboard/data.py` - Data fetching layer
+- [ ] **E3** Add filters and interactivity
+- [ ] **E3** Add export functionality (CSV, PNG)
+
+### Phase 8: Final Verification
 - [ ] Full test suite passes: `pytest tests/ -v`
 - [ ] Manual verification of CLI commands
 - [ ] Docker container runs all commands successfully
 - [ ] Classification cost < $2/1000 items
+- [ ] Dashboard loads and displays all charts correctly
 
 ---
 
@@ -542,6 +681,10 @@ Verify Docker build with new components:
 | Priority ranking works | Top opportunities identified |
 | All tests pass | 100% green |
 | Docker works | All commands run in container |
+| **Dashboard loads** | All 6 chart types render correctly |
+| **Dashboard API responds** | All endpoints return valid JSON < 500ms |
+| **Dashboard filters work** | Date, category, source filters functional |
+| **Dashboard export works** | CSV export generates valid file |
 
 ---
 
@@ -565,6 +708,12 @@ Verify Docker build with new components:
 | `tests/unit/test_reranker.py` | C1 | MEDIUM |
 | `tests/integration/test_classification_pipeline.py` | C2 | MEDIUM |
 | `tests/integration/test_reddit_rss_integration.py` | C2 | MEDIUM |
+| `api/__init__.py` | E1 | MEDIUM |
+| `api/routes.py` | E1 | MEDIUM |
+| `api/schemas.py` | E1 | MEDIUM |
+| `dashboard/app.py` | E2 | MEDIUM |
+| `dashboard/charts.py` | E2 | MEDIUM |
+| `dashboard/data.py` | E2 | MEDIUM |
 
 ### To Modify
 | File | Task | Priority |
