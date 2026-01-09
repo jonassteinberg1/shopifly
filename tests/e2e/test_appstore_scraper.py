@@ -197,12 +197,12 @@ class TestAppStoreStoragePipeline:
         stats = sqlite_storage.get_stats()
         assert stats["raw_data_points"] == stored_count
 
-        # Retrieve and verify
+        # Retrieve and verify (returns dicts, not objects)
         unprocessed = sqlite_storage.get_unprocessed_raw_data()
         for item in unprocessed:
-            assert item.source == DataSource.APP_STORE
-            assert "rating" in item.metadata
-            assert "app_slug" in item.metadata
+            assert item["source"] == DataSource.APP_STORE.value
+            assert "rating" in item["metadata"]
+            assert "app_slug" in item["metadata"]
 
     @pytest.mark.asyncio
     async def test_e2e_review_ready_for_llm(self, scraper):

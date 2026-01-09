@@ -24,6 +24,8 @@ COPY config/ config/
 COPY scrapers/ scrapers/
 COPY analysis/ analysis/
 COPY storage/ storage/
+COPY research/ research/
+COPY scripts/ scripts/
 COPY main.py .
 
 # Create data directory for SQLite storage
