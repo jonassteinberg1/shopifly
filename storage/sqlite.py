@@ -1,5 +1,7 @@
 """SQLite storage backend for local development and testing."""
 
+from __future__ import annotations
+
 import json
 import sqlite3
 from datetime import datetime
@@ -103,6 +105,49 @@ class SQLiteStorage(StorageBackend):
                 CREATE INDEX IF NOT EXISTS idx_raw_sources_source ON raw_sources(source);
                 CREATE INDEX IF NOT EXISTS idx_insights_category ON insights(category);
                 CREATE INDEX IF NOT EXISTS idx_opportunity_scores_total ON opportunity_scores(total_score DESC);
+
+                -- Interview participants (anonymized)
+                CREATE TABLE IF NOT EXISTS interview_participants (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    participant_id TEXT UNIQUE NOT NULL,
+                    interview_date TIMESTAMP NOT NULL,
+                    store_vertical TEXT NOT NULL,
+                    monthly_gmv_range TEXT NOT NULL,
+                    store_age_months INTEGER NOT NULL,
+                    team_size INTEGER NOT NULL,
+                    app_count INTEGER NOT NULL,
+                    monthly_app_budget INTEGER,
+                    beta_tester BOOLEAN DEFAULT FALSE,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                );
+
+                -- Interview insights
+                CREATE TABLE IF NOT EXISTS interview_insights (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    interview_id TEXT NOT NULL,
+                    participant_id TEXT NOT NULL REFERENCES interview_participants(participant_id),
+                    recording_url TEXT,
+                    pain_category TEXT NOT NULL,
+                    pain_summary TEXT NOT NULL,
+                    verbatim_quotes TEXT,
+                    frustration_level INTEGER NOT NULL,
+                    frequency TEXT NOT NULL,
+                    business_impact TEXT NOT NULL,
+                    current_workaround TEXT,
+                    apps_tried TEXT,
+                    ideal_solution TEXT,
+                    wtp_amount_low INTEGER,
+                    wtp_amount_high INTEGER,
+                    wtp_quote TEXT,
+                    interviewer_notes TEXT,
+                    follow_up_candidate BOOLEAN DEFAULT FALSE,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                );
+
+                -- Indexes for interview data
+                CREATE INDEX IF NOT EXISTS idx_interview_participants_id ON interview_participants(participant_id);
+                CREATE INDEX IF NOT EXISTS idx_interview_insights_category ON interview_insights(pain_category);
+                CREATE INDEX IF NOT EXISTS idx_interview_insights_participant ON interview_insights(participant_id);
             """)
             conn.commit()
         finally:
@@ -434,11 +479,27 @@ class SQLiteStorage(StorageBackend):
             clusters_count = conn.execute("SELECT COUNT(*) FROM clusters").fetchone()[0]
             scores_count = conn.execute("SELECT COUNT(*) FROM opportunity_scores").fetchone()[0]
 
+            # Interview counts
+            participants_count = conn.execute(
+                "SELECT COUNT(*) FROM interview_participants"
+            ).fetchone()[0]
+            interview_insights_count = conn.execute(
+                "SELECT COUNT(*) FROM interview_insights"
+            ).fetchone()[0]
+
             # Category breakdown
             cursor = conn.execute(
                 "SELECT category, COUNT(*) as count FROM insights GROUP BY category"
             )
             category_counts = {row["category"]: row["count"] for row in cursor.fetchall()}
+
+            # Interview category breakdown
+            cursor = conn.execute(
+                "SELECT pain_category, COUNT(*) as count FROM interview_insights GROUP BY pain_category"
+            )
+            interview_category_counts = {
+                row["pain_category"]: row["count"] for row in cursor.fetchall()
+            }
 
             return {
                 "raw_data_points": raw_count,
@@ -446,6 +507,9 @@ class SQLiteStorage(StorageBackend):
                 "problem_clusters": clusters_count,
                 "scored_opportunities": scores_count,
                 "category_breakdown": category_counts,
+                "interview_participants": participants_count,
+                "interview_insights": interview_insights_count,
+                "interview_category_breakdown": interview_category_counts,
             }
         finally:
             conn.close()
@@ -459,6 +523,8 @@ class SQLiteStorage(StorageBackend):
                 DELETE FROM clusters;
                 DELETE FROM insights;
                 DELETE FROM raw_sources;
+                DELETE FROM interview_insights;
+                DELETE FROM interview_participants;
             """)
             conn.commit()
         finally:

@@ -1,5 +1,7 @@
 """Shopify Community Forums scraper."""
 
+from __future__ import annotations
+
 import asyncio
 import re
 from datetime import datetime
@@ -156,7 +158,7 @@ class CommunityScraper(BaseScraper):
                 break
 
     async def _scrape_topic(self, topic_url: str) -> RawDataPoint | None:
-        """Scrape a single topic/thread.
+        """Scrape a single topic/thread including all replies.
 
         Args:
             topic_url: Full URL to the topic.
@@ -175,28 +177,78 @@ class CommunityScraper(BaseScraper):
             title_elem = soup.select_one("h1, .topic-title, .thread-title")
             title = title_elem.get_text(strip=True) if title_elem else ""
 
-            # Extract first post content
-            post_elem = soup.select_one(
-                ".post-body, .topic-body, .message-body, .cooked, article"
-            )
-            content = post_elem.get_text(strip=True) if post_elem else ""
+            # Extract ALL posts in the thread (OP + replies)
+            # Try multiple selectors for different forum layouts
+            post_selectors = [
+                ".post-body",
+                ".topic-body",
+                ".message-body",
+                ".cooked",
+                ".lia-message-body-content",
+                ".MessageBody",
+                ".message-content",
+                "article .content",
+            ]
+
+            all_posts = []
+            for selector in post_selectors:
+                posts = soup.select(selector)
+                if posts:
+                    all_posts = posts
+                    break
+
+            # If no posts found with specific selectors, try article tags
+            if not all_posts:
+                all_posts = soup.select("article")
+
+            if not all_posts:
+                return None
+
+            # First post is the OP
+            content = all_posts[0].get_text(strip=True) if all_posts else ""
 
             if not content:
                 return None
 
-            # Extract author
+            # Extract replies (all posts after the first)
+            replies_content = []
+            for i, post_elem in enumerate(all_posts[1:], start=1):
+                reply_text = post_elem.get_text(strip=True)
+                if reply_text and len(reply_text) > 5:  # Skip empty/trivial replies
+                    # Try to extract reply author
+                    reply_author = "Anonymous"
+                    # Look for author in parent/sibling elements
+                    parent = post_elem.parent
+                    for _ in range(5):
+                        if parent is None:
+                            break
+                        author_elem = parent.select_one(
+                            ".author-name, .username, .user-link, .lia-user-name-link, .UserName"
+                        )
+                        if author_elem:
+                            reply_author = author_elem.get_text(strip=True)
+                            break
+                        parent = parent.parent
+
+                    replies_content.append({
+                        "author": reply_author,
+                        "content": reply_text,
+                        "position": i,
+                    })
+
+            # Extract OP author
             author_elem = soup.select_one(
-                ".author-name, .username, .user-link, [data-user-card]"
+                ".author-name, .username, .user-link, [data-user-card], .lia-user-name-link"
             )
             author = author_elem.get_text(strip=True) if author_elem else "Anonymous"
 
             # Extract date
-            date_elem = soup.select_one("time, .post-date, .relative-date")
+            date_elem = soup.select_one("time, .post-date, .relative-date, .DateTime")
             date_str = date_elem.get("datetime") or date_elem.get_text(strip=True) if date_elem else ""
             created_at = self._parse_date(date_str)
 
             # Extract metadata
-            replies = self._extract_number(soup, ".reply-count, .replies")
+            reply_count = self._extract_number(soup, ".reply-count, .replies")
             views = self._extract_number(soup, ".view-count, .views")
             likes = self._extract_number(soup, ".like-count, .likes")
 
@@ -213,7 +265,8 @@ class CommunityScraper(BaseScraper):
                 author=author,
                 created_at=created_at,
                 metadata={
-                    "replies": replies,
+                    "reply_count": reply_count,
+                    "replies": replies_content,
                     "views": views,
                     "likes": likes,
                     "type": "topic",

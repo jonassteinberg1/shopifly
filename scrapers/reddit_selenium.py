@@ -4,6 +4,8 @@ This scraper uses httpx for RSS feeds (primary, most reliable) and
 Selenium as a fallback for HTML parsing when needed.
 """
 
+from __future__ import annotations
+
 import asyncio
 import json
 import re

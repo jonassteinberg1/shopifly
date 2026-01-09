@@ -1,5 +1,7 @@
 """Base scraper class and common data models."""
 
+from __future__ import annotations
+
 from abc import ABC, abstractmethod
 from datetime import datetime
 from enum import Enum

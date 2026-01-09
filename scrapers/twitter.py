@@ -1,5 +1,7 @@
 """Twitter/X scraper for Shopify complaints and discussions."""
 
+from __future__ import annotations
+
 import asyncio
 from datetime import datetime
 from typing import AsyncIterator

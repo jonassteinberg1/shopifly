@@ -1,5 +1,7 @@
 """Abstract base class for storage backends."""
 
+from __future__ import annotations
+
 from abc import ABC, abstractmethod
 
 from scrapers.base import RawDataPoint

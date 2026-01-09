@@ -19,7 +19,16 @@ from scrapers import (
     DataSource,
 )
 from analysis import Classifier, ClassifiedInsight
+from analysis.classifier import ProblemCategory
+from analysis.interview_reranker import InterviewReranker, format_opportunity_report
 from storage import get_storage, StorageBackend
+from research import (
+    InterviewStorage,
+    InterviewParticipant,
+    InterviewInsight,
+    InterviewFrequency,
+    BusinessImpact,
+)
 from config import settings
 
 
@@ -420,6 +429,314 @@ MAX_RETRIES=3
     console.print("   - Opportunity Scores")
     console.print("3. Run [cyan]python main.py health[/cyan] to verify connections")
     console.print("4. Run [cyan]python main.py scrape[/cyan] to start collecting data")
+
+
+# -------------------------------------------------------------------------
+# Interview Research Commands
+# -------------------------------------------------------------------------
+
+interview_app = typer.Typer(help="Interview research commands")
+app.add_typer(interview_app, name="interview")
+
+
+@interview_app.command("add-participant")
+def interview_add_participant(
+    participant_id: str = typer.Option(..., "--id", help="Unique participant ID (e.g., P001)"),
+    vertical: str = typer.Option(..., "--vertical", "-v", help="Store vertical (e.g., fashion, home_goods)"),
+    gmv_range: str = typer.Option(..., "--gmv", help="Monthly GMV range (e.g., '$10K-$30K')"),
+    store_age: int = typer.Option(..., "--age", help="Store age in months"),
+    team_size: int = typer.Option(1, "--team", help="Team size"),
+    app_count: int = typer.Option(0, "--apps", help="Number of Shopify apps in use"),
+    app_budget: Optional[int] = typer.Option(None, "--budget", help="Monthly app budget in dollars"),
+    beta_tester: bool = typer.Option(False, "--beta", help="Interested in beta testing"),
+    db_path: Optional[str] = typer.Option(None, "--db-path", help="SQLite database path"),
+):
+    """Add a new interview participant."""
+    from datetime import datetime
+
+    storage = InterviewStorage(db_path=db_path)
+
+    participant = InterviewParticipant(
+        participant_id=participant_id,
+        interview_date=datetime.utcnow(),
+        store_vertical=vertical,
+        monthly_gmv_range=gmv_range,
+        store_age_months=store_age,
+        team_size=team_size,
+        app_count=app_count,
+        monthly_app_budget=app_budget,
+        beta_tester=beta_tester,
+    )
+
+    try:
+        storage.save_participant(participant)
+        console.print(f"[green]✓ Added participant {participant_id}[/green]")
+    except Exception as e:
+        console.print(f"[red]Error adding participant: {e}[/red]")
+
+
+@interview_app.command("add-insight")
+def interview_add_insight(
+    interview_id: str = typer.Option(..., "--interview", "-i", help="Interview ID"),
+    participant_id: str = typer.Option(..., "--participant", "-p", help="Participant ID"),
+    category: str = typer.Option(..., "--category", "-c", help="Pain point category"),
+    summary: str = typer.Option(..., "--summary", "-s", help="Pain point summary"),
+    frustration: int = typer.Option(3, "--frustration", "-f", help="Frustration level (1-5)"),
+    frequency: str = typer.Option("weekly", "--frequency", help="Frequency: daily, weekly, monthly, occasionally"),
+    impact: str = typer.Option("medium", "--impact", help="Business impact: high, medium, low"),
+    wtp_low: Optional[int] = typer.Option(None, "--wtp-low", help="WTP low bound ($/month)"),
+    wtp_high: Optional[int] = typer.Option(None, "--wtp-high", help="WTP high bound ($/month)"),
+    workaround: Optional[str] = typer.Option(None, "--workaround", help="Current workaround"),
+    notes: str = typer.Option("", "--notes", help="Interviewer notes"),
+    db_path: Optional[str] = typer.Option(None, "--db-path", help="SQLite database path"),
+):
+    """Add an insight from an interview."""
+    storage = InterviewStorage(db_path=db_path)
+
+    try:
+        pain_category = ProblemCategory(category)
+    except ValueError:
+        console.print(f"[red]Invalid category: {category}[/red]")
+        console.print(f"Valid categories: {[c.value for c in ProblemCategory]}")
+        return
+
+    try:
+        freq = InterviewFrequency(frequency)
+    except ValueError:
+        console.print(f"[red]Invalid frequency: {frequency}[/red]")
+        return
+
+    try:
+        biz_impact = BusinessImpact(impact)
+    except ValueError:
+        console.print(f"[red]Invalid impact: {impact}[/red]")
+        return
+
+    insight = InterviewInsight(
+        interview_id=interview_id,
+        participant_id=participant_id,
+        pain_category=pain_category,
+        pain_summary=summary,
+        frustration_level=frustration,
+        frequency=freq,
+        business_impact=biz_impact,
+        wtp_amount_low=wtp_low,
+        wtp_amount_high=wtp_high,
+        current_workaround=workaround,
+        interviewer_notes=notes,
+    )
+
+    try:
+        record_id = storage.save_insight(insight)
+        console.print(f"[green]✓ Added insight (ID: {record_id})[/green]")
+    except Exception as e:
+        console.print(f"[red]Error adding insight: {e}[/red]")
+
+
+@interview_app.command("stats")
+def interview_stats(
+    db_path: Optional[str] = typer.Option(None, "--db-path", help="SQLite database path"),
+):
+    """Show interview research statistics."""
+    storage = InterviewStorage(db_path=db_path)
+
+    try:
+        stats = storage.get_interview_stats()
+    except Exception as e:
+        console.print(f"[red]Error fetching stats: {e}[/red]")
+        return
+
+    console.print("\n[bold]📊 Interview Research Stats[/bold]\n")
+
+    table = Table(show_header=True, header_style="bold magenta")
+    table.add_column("Metric", style="cyan")
+    table.add_column("Value", justify="right")
+
+    table.add_row("Total Participants", str(stats["total_participants"]))
+    table.add_row("Total Insights", str(stats["total_insights"]))
+    table.add_row("Avg Insights/Interview", f"{stats['avg_insights_per_interview']:.1f}")
+    table.add_row("Beta Testers", str(stats["beta_testers"]))
+    table.add_row("Insights with WTP", str(stats["insights_with_wtp"]))
+    table.add_row("WTP Rate", f"{stats['wtp_rate']:.1f}%")
+    if stats["avg_wtp_amount"]:
+        table.add_row("Avg WTP Amount", f"${stats['avg_wtp_amount']:.0f}/mo")
+    if stats["wtp_range"]:
+        table.add_row("WTP Range", f"${stats['wtp_range'][0]} - ${stats['wtp_range'][1]}/mo")
+
+    console.print(table)
+
+    # Category breakdown
+    category_stats = storage.get_category_summary()
+    if category_stats:
+        console.print("\n[bold]📂 Category Breakdown[/bold]\n")
+        cat_table = Table(show_header=True, header_style="bold magenta")
+        cat_table.add_column("Category", style="cyan")
+        cat_table.add_column("Count", justify="right")
+        cat_table.add_column("Avg Frustration", justify="right")
+        cat_table.add_column("WTP Count", justify="right")
+        cat_table.add_column("Avg WTP", justify="right")
+
+        for cat, data in sorted(category_stats.items(), key=lambda x: x[1]["count"], reverse=True):
+            cat_table.add_row(
+                cat,
+                str(data["count"]),
+                f"{data['avg_frustration']:.1f}",
+                str(data["wtp_count"]),
+                f"${data['avg_wtp']:.0f}" if data["avg_wtp"] else "-",
+            )
+
+        console.print(cat_table)
+
+
+@interview_app.command("list")
+def interview_list(
+    db_path: Optional[str] = typer.Option(None, "--db-path", help="SQLite database path"),
+):
+    """List all interview participants."""
+    storage = InterviewStorage(db_path=db_path)
+
+    try:
+        participants = storage.get_all_participants()
+    except Exception as e:
+        console.print(f"[red]Error fetching participants: {e}[/red]")
+        return
+
+    if not participants:
+        console.print("[yellow]No participants found[/yellow]")
+        return
+
+    console.print(f"\n[bold]👥 Interview Participants ({len(participants)})[/bold]\n")
+
+    table = Table(show_header=True, header_style="bold magenta")
+    table.add_column("ID", style="cyan")
+    table.add_column("Date")
+    table.add_column("Vertical")
+    table.add_column("GMV Range")
+    table.add_column("Apps")
+    table.add_column("Beta")
+
+    for p in participants:
+        table.add_row(
+            p.participant_id,
+            p.interview_date.strftime("%Y-%m-%d"),
+            p.store_vertical,
+            p.monthly_gmv_range,
+            str(p.app_count),
+            "✓" if p.beta_tester else "",
+        )
+
+    console.print(table)
+
+
+@interview_app.command("beta-testers")
+def interview_beta_testers(
+    db_path: Optional[str] = typer.Option(None, "--db-path", help="SQLite database path"),
+):
+    """List participants interested in beta testing."""
+    storage = InterviewStorage(db_path=db_path)
+
+    try:
+        testers = storage.get_beta_testers()
+    except Exception as e:
+        console.print(f"[red]Error fetching beta testers: {e}[/red]")
+        return
+
+    if not testers:
+        console.print("[yellow]No beta testers found[/yellow]")
+        return
+
+    console.print(f"\n[bold]🧪 Beta Testers ({len(testers)})[/bold]\n")
+
+    table = Table(show_header=True, header_style="bold magenta")
+    table.add_column("ID", style="cyan")
+    table.add_column("Date")
+    table.add_column("Vertical")
+    table.add_column("GMV Range")
+    table.add_column("App Budget")
+
+    for p in testers:
+        table.add_row(
+            p.participant_id,
+            p.interview_date.strftime("%Y-%m-%d"),
+            p.store_vertical,
+            p.monthly_gmv_range,
+            f"${p.monthly_app_budget}/mo" if p.monthly_app_budget else "-",
+        )
+
+    console.print(table)
+
+
+@interview_app.command("opportunities")
+def interview_opportunities(
+    top: int = typer.Option(10, "--top", "-t", help="Number of top opportunities"),
+    validated_only: bool = typer.Option(False, "--validated", help="Show only interview-validated"),
+    wtp_only: bool = typer.Option(False, "--wtp", help="Show only with confirmed WTP"),
+    storage_type: StorageBackendType = typer.Option(
+        StorageBackendType.sqlite, "--storage", help="Storage backend"
+    ),
+    db_path: Optional[str] = typer.Option(None, "--db-path", help="SQLite database path"),
+):
+    """Show ranked opportunities with interview validation."""
+    kwargs = {"db_path": db_path} if db_path and storage_type.value == "sqlite" else {}
+    main_storage = get_storage(backend=storage_type.value, **kwargs)
+    interview_storage = InterviewStorage(db_path=db_path)
+
+    try:
+        scraped_insights = main_storage.get_all_insights()
+        interview_insights = interview_storage.get_all_insights()
+    except Exception as e:
+        console.print(f"[red]Error fetching data: {e}[/red]")
+        return
+
+    if not scraped_insights and not interview_insights:
+        console.print("[yellow]No insights found. Run scraping and/or add interview data first.[/yellow]")
+        return
+
+    reranker = InterviewReranker(scraped_insights, interview_insights)
+
+    if wtp_only:
+        opportunities = reranker.get_wtp_confirmed_opportunities()
+    elif validated_only:
+        opportunities = reranker.get_validated_opportunities()
+    else:
+        opportunities = reranker.get_top_opportunities(top)
+
+    if not opportunities:
+        console.print("[yellow]No opportunities found matching criteria[/yellow]")
+        return
+
+    console.print(f"\n[bold]🏆 Ranked Opportunities (Interview-Enhanced)[/bold]\n")
+
+    table = Table(show_header=True, header_style="bold magenta")
+    table.add_column("Rank", justify="right", style="cyan")
+    table.add_column("Category")
+    table.add_column("Score", justify="right")
+    table.add_column("Base", justify="right")
+    table.add_column("Interview+", justify="right")
+    table.add_column("Validated")
+    table.add_column("WTP")
+
+    for i, opp in enumerate(opportunities[:top], 1):
+        table.add_row(
+            str(i),
+            opp.category.value,
+            f"{opp.total_score:.1f}",
+            f"{opp.base_score:.1f}",
+            f"+{opp.interview_bonus:.1f}",
+            "✓" if opp.interview_validated else "",
+            f"${opp.interview_avg_wtp:.0f}" if opp.interview_avg_wtp else "",
+        )
+
+    console.print(table)
+
+    # Show key quotes for top opportunities
+    console.print("\n[bold]💬 Key Quotes from Interviews[/bold]\n")
+    for opp in opportunities[:3]:
+        if opp.key_quotes:
+            console.print(f"[cyan]{opp.category.value.upper()}:[/cyan]")
+            for quote in opp.key_quotes[:2]:
+                console.print(f'  "{quote[:100]}..."' if len(quote) > 100 else f'  "{quote}"')
+            console.print()
 
 
 if __name__ == "__main__":
