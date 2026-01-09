@@ -158,12 +158,90 @@ Would [Day] or [Day] work for a quick chat?
 **Cons:** Cold outreach has low response (2-5%), email finding is tedious
 **Target:** 5-8 interviews from this channel
 
-### Channel 5: Paid Recruitment Platforms
-**Approach:** Use services like User Interviews, Respondent.io, or Prolific.
+### Channel 5: Paid Recruitment Platforms — PRIMARY CHANNEL
+**Approach:** Use Respondent.io for all recruitment. They handle outreach, screening, scheduling, and no-show management.
 
-**Pros:** Fast, reliable, pre-screened participants
+**Platform:** Respondent.io
+**Pros:** Fast, reliable, pre-screened participants, calendar integration, no manual outreach required
 **Cons:** More expensive ($100-150/participant including platform fee)
-**Target:** 5-10 interviews for quick ramp-up
+**Target:** 20 interviews for Phase 1
+
+---
+
+## Respondent.io Setup
+
+### Project Title
+```
+Shopify Store Owners - 25 min Paid Interview ($50)
+```
+
+### Project Description
+```
+I'm conducting research to understand the biggest challenges small Shopify merchants face day-to-day. Looking for store owners who manage their own stores and have been operating for at least 6 months.
+
+This is a 25-minute video call where I'll ask about your experience running your store, what's working, what's frustrating, and what tools you use.
+
+No sales pitch - purely research to inform product development.
+```
+
+### Screening Questions
+
+**Q1. Do you currently own and operate a Shopify store?**
+- Yes → Continue
+- No → Disqualify
+
+**Q2. How long has your store been active?**
+- Less than 6 months → Disqualify
+- 6-12 months → Continue
+- 1-2 years → Continue
+- More than 2 years → Continue
+
+**Q3. What is your approximate monthly revenue?**
+- Under $1,000 → Disqualify
+- $1,000 - $10,000 → Continue
+- $10,000 - $50,000 → Continue (ideal)
+- Over $50,000 → Disqualify
+
+**Q4. What best describes your business model?**
+- I sell my own products (manufactured, handmade, or private label) → Continue
+- Print on demand → Continue
+- Resale/wholesale → Continue
+- Dropshipping only → Disqualify
+- Mix of the above → Continue
+
+**Q5. Who manages your Shopify store?**
+- I manage it myself → Continue
+- I manage it with a small team (1-3 people) → Continue
+- An agency manages it for me → Disqualify
+- A virtual assistant manages it → Continue
+
+**Q6. How many Shopify apps do you currently have installed?**
+- 0-2 → Continue
+- 3-5 → Continue
+- 6-10 → Continue
+- More than 10 → Continue
+
+**Q7. Are you or have you been a Shopify app developer?**
+- Yes → Disqualify
+- No → Continue
+
+**Q8. What's your biggest frustration with running your Shopify store right now?** (Open text)
+- Any answer → Continue
+- *(Use this to prioritize interesting candidates)*
+
+### Targeting Settings
+
+| Field | Value |
+|-------|-------|
+| Location | United States |
+| Session length | 25 minutes |
+| Incentive | $50 |
+| Number of participants | 20 |
+
+### Budget Estimate
+- Platform fee: ~$100/participant
+- Incentive: $50/participant
+- **Total for 20 interviews: ~$3,000**
 
 ---
 
