@@ -739,5 +739,270 @@ def interview_opportunities(
             console.print()
 
 
+@interview_app.command("import-vtt")
+def interview_import_vtt(
+    vtt_file: str = typer.Argument(..., help="Path to Zoom VTT transcript file"),
+    participant_id: Optional[str] = typer.Option(None, "--participant", "-p", help="Participant ID to link"),
+    output_dir: Optional[str] = typer.Option(None, "--output", "-o", help="Output directory for JSON transcript"),
+):
+    """Import a Zoom VTT transcript file.
+
+    Downloads from Zoom portal: Recordings -> Download transcript (VTT)
+    """
+    from pathlib import Path
+    from research.transcription import import_vtt_file, get_default_transcript_dir
+
+    vtt_path = Path(vtt_file)
+    if not vtt_path.exists():
+        console.print(f"[red]VTT file not found: {vtt_file}[/red]")
+        raise typer.Exit(1)
+
+    out_dir = Path(output_dir) if output_dir else get_default_transcript_dir()
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    try:
+        with console.status(f"Importing {vtt_path.name}..."):
+            transcript = import_vtt_file(vtt_path, participant_id=participant_id, output_dir=out_dir)
+
+        output_path = out_dir / f"{vtt_path.stem}.json"
+        console.print(f"[green]✓ Imported VTT transcript[/green]")
+        console.print(f"  Source: {vtt_path.name}")
+        console.print(f"  Segments: {len(transcript.segments)}")
+        console.print(f"  Duration: {transcript.duration_seconds:.1f}s" if transcript.duration_seconds else "")
+        console.print(f"  Output: {output_path}")
+        if participant_id:
+            console.print(f"  Participant: {participant_id}")
+
+    except Exception as e:
+        console.print(f"[red]Error importing VTT: {e}[/red]")
+        raise typer.Exit(1)
+
+
+@interview_app.command("transcribe")
+def interview_transcribe(
+    audio_file: str = typer.Argument(..., help="Path to audio file (mp3, wav, m4a, etc.)"),
+    model: str = typer.Option("base", "--model", "-m", help="Whisper model: tiny, base, small, medium, large"),
+    participant_id: Optional[str] = typer.Option(None, "--participant", "-p", help="Participant ID to link"),
+    output_dir: Optional[str] = typer.Option(None, "--output", "-o", help="Output directory for JSON transcript"),
+):
+    """Transcribe an audio recording using Whisper.
+
+    Requires openai-whisper: pip install openai-whisper
+    """
+    from pathlib import Path
+    from research.transcription import transcribe_audio_whisper, get_default_transcript_dir
+
+    audio_path = Path(audio_file)
+    if not audio_path.exists():
+        console.print(f"[red]Audio file not found: {audio_file}[/red]")
+        raise typer.Exit(1)
+
+    out_dir = Path(output_dir) if output_dir else get_default_transcript_dir()
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    try:
+        console.print(f"[cyan]Transcribing with Whisper ({model} model)...[/cyan]")
+        console.print("[dim]This may take a while depending on audio length and model size.[/dim]")
+
+        transcript = transcribe_audio_whisper(
+            audio_path, model_name=model, participant_id=participant_id, output_dir=out_dir
+        )
+
+        output_path = out_dir / f"{audio_path.stem}.json"
+        console.print(f"\n[green]✓ Transcription complete[/green]")
+        console.print(f"  Source: {audio_path.name}")
+        console.print(f"  Model: {model}")
+        console.print(f"  Language: {transcript.language}")
+        console.print(f"  Segments: {len(transcript.segments)}")
+        console.print(f"  Duration: {transcript.duration_seconds:.1f}s" if transcript.duration_seconds else "")
+        console.print(f"  Output: {output_path}")
+        if participant_id:
+            console.print(f"  Participant: {participant_id}")
+
+    except ImportError:
+        console.print("[red]openai-whisper is not installed.[/red]")
+        console.print("Install with: [cyan]pip install openai-whisper[/cyan]")
+        raise typer.Exit(1)
+    except Exception as e:
+        console.print(f"[red]Error transcribing: {e}[/red]")
+        raise typer.Exit(1)
+
+
+@interview_app.command("classify-transcript")
+def interview_classify_transcript(
+    transcript_file: str = typer.Argument(..., help="Path to transcript JSON file"),
+    participant_id: Optional[str] = typer.Option(None, "--participant", "-p", help="Participant ID (overrides transcript)"),
+    interview_id: Optional[str] = typer.Option(None, "--interview", "-i", help="Interview ID prefix"),
+    db_path: Optional[str] = typer.Option(None, "--db-path", help="SQLite database path"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Analyze but don't save to database"),
+):
+    """Extract and classify insights from a transcript using LLM.
+
+    Analyzes the transcript and extracts pain points, WTP signals, etc.
+    """
+    from pathlib import Path
+    from research.transcription import Transcript
+    from research.transcript_classifier import TranscriptClassifier
+
+    transcript_path = Path(transcript_file)
+    if not transcript_path.exists():
+        console.print(f"[red]Transcript file not found: {transcript_file}[/red]")
+        raise typer.Exit(1)
+
+    try:
+        # Load transcript
+        transcript = Transcript.from_json_file(transcript_path)
+
+        # Use participant ID from transcript if not overridden
+        pid = participant_id or transcript.participant_id
+        if not pid:
+            console.print("[yellow]Warning: No participant ID specified. Using 'unknown'.[/yellow]")
+            pid = "unknown"
+
+        # Generate interview ID if not provided
+        iid = interview_id or f"INT_{transcript_path.stem}"
+
+        console.print(f"[cyan]Analyzing transcript with LLM...[/cyan]")
+
+        classifier = TranscriptClassifier()
+        analysis = classifier.classify_transcript(transcript)
+
+        console.print(f"\n[green]✓ Analysis complete[/green]")
+        console.print(f"  Pain points found: {len(analysis.pain_points)}")
+        console.print(f"  WTP signals found: {len(analysis.wtp_signals)}")
+
+        # Show extracted pain points
+        if analysis.pain_points:
+            console.print("\n[bold]Extracted Pain Points:[/bold]")
+            for i, pp in enumerate(analysis.pain_points, 1):
+                console.print(f"\n  {i}. [{pp.category.upper()}] {pp.summary}")
+                console.print(f"     Frustration: {pp.frustration_level}/5 | Impact: {pp.business_impact}")
+                if pp.verbatim_quote:
+                    quote = pp.verbatim_quote[:80] + "..." if len(pp.verbatim_quote) > 80 else pp.verbatim_quote
+                    console.print(f'     Quote: "{quote}"')
+
+        # Show WTP signals
+        if analysis.wtp_signals:
+            console.print("\n[bold]WTP Signals:[/bold]")
+            for wtp in analysis.wtp_signals:
+                amount = f" ({wtp.amount_mentioned})" if wtp.amount_mentioned else ""
+                console.print(f"  • {wtp.context}{amount}")
+                console.print(f'    "{wtp.verbatim_quote[:60]}..."' if len(wtp.verbatim_quote) > 60 else f'    "{wtp.verbatim_quote}"')
+
+        if dry_run:
+            console.print("\n[yellow]Dry run - insights not saved to database.[/yellow]")
+        else:
+            # Convert to InterviewInsights and save
+            storage = InterviewStorage(db_path=db_path)
+            insights = classifier.convert_to_interview_insights(analysis, iid, pid)
+
+            saved_count = 0
+            for insight in insights:
+                try:
+                    storage.save_insight(insight)
+                    saved_count += 1
+                except Exception as e:
+                    console.print(f"[yellow]Warning: Could not save insight: {e}[/yellow]")
+
+            console.print(f"\n[green]✓ Saved {saved_count} insights to database[/green]")
+
+    except Exception as e:
+        console.print(f"[red]Error classifying transcript: {e}[/red]")
+        import traceback
+        traceback.print_exc()
+        raise typer.Exit(1)
+
+
+@interview_app.command("process-recording")
+def interview_process_recording(
+    audio_file: str = typer.Argument(..., help="Path to audio file (mp3, wav, m4a, etc.)"),
+    participant_id: str = typer.Option(..., "--participant", "-p", help="Participant ID"),
+    model: str = typer.Option("base", "--model", "-m", help="Whisper model: tiny, base, small, medium, large"),
+    interview_id: Optional[str] = typer.Option(None, "--interview", "-i", help="Interview ID prefix"),
+    db_path: Optional[str] = typer.Option(None, "--db-path", help="SQLite database path"),
+):
+    """End-to-end processing: transcribe audio and extract insights.
+
+    Runs the full pipeline:
+    1. Transcribe audio with Whisper
+    2. Classify transcript with LLM
+    3. Save insights to database
+    """
+    from pathlib import Path
+    from research.transcription import transcribe_audio_whisper, get_default_transcript_dir
+    from research.transcript_classifier import TranscriptClassifier
+
+    audio_path = Path(audio_file)
+    if not audio_path.exists():
+        console.print(f"[red]Audio file not found: {audio_file}[/red]")
+        raise typer.Exit(1)
+
+    out_dir = get_default_transcript_dir()
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    iid = interview_id or f"INT_{audio_path.stem}"
+
+    try:
+        # Step 1: Transcribe
+        console.print(f"\n[bold cyan]Step 1/3: Transcribing audio ({model} model)...[/bold cyan]")
+        console.print("[dim]This may take a while...[/dim]")
+
+        transcript = transcribe_audio_whisper(
+            audio_path, model_name=model, participant_id=participant_id, output_dir=out_dir
+        )
+
+        console.print(f"[green]✓ Transcription complete[/green]")
+        console.print(f"  Segments: {len(transcript.segments)}")
+        console.print(f"  Duration: {transcript.duration_seconds:.1f}s" if transcript.duration_seconds else "")
+
+        # Step 2: Classify
+        console.print(f"\n[bold cyan]Step 2/3: Analyzing transcript with LLM...[/bold cyan]")
+
+        classifier = TranscriptClassifier()
+        analysis = classifier.classify_transcript(transcript)
+
+        console.print(f"[green]✓ Analysis complete[/green]")
+        console.print(f"  Pain points: {len(analysis.pain_points)}")
+        console.print(f"  WTP signals: {len(analysis.wtp_signals)}")
+
+        # Step 3: Save
+        console.print(f"\n[bold cyan]Step 3/3: Saving to database...[/bold cyan]")
+
+        storage = InterviewStorage(db_path=db_path)
+        insights = classifier.convert_to_interview_insights(analysis, iid, participant_id)
+
+        saved_count = 0
+        for insight in insights:
+            try:
+                storage.save_insight(insight)
+                saved_count += 1
+            except Exception as e:
+                console.print(f"[yellow]Warning: {e}[/yellow]")
+
+        console.print(f"[green]✓ Saved {saved_count} insights[/green]")
+
+        # Summary
+        console.print(f"\n[bold green]✓ Processing complete![/bold green]")
+        console.print(f"  Transcript: {out_dir / f'{audio_path.stem}.json'}")
+        console.print(f"  Participant: {participant_id}")
+        console.print(f"  Insights saved: {saved_count}")
+
+        # Show top pain points
+        if analysis.pain_points:
+            console.print(f"\n[bold]Top Pain Points:[/bold]")
+            for pp in analysis.pain_points[:3]:
+                console.print(f"  • [{pp.category.upper()}] {pp.summary[:60]}...")
+
+    except ImportError:
+        console.print("[red]openai-whisper is not installed.[/red]")
+        console.print("Install with: [cyan]pip install openai-whisper[/cyan]")
+        raise typer.Exit(1)
+    except Exception as e:
+        console.print(f"[red]Error: {e}[/red]")
+        import traceback
+        traceback.print_exc()
+        raise typer.Exit(1)
+
+
 if __name__ == "__main__":
     app()

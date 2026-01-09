@@ -1,0 +1,87 @@
+{
+  "source_file": "tests/fixtures/sample_interview.vtt",
+  "transcribed_at": "2025-01-09T12:00:00Z",
+  "method": "zoom_vtt",
+  "model": null,
+  "duration_seconds": 175.5,
+  "language": "en",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 5.2,
+      "text": "Thanks for taking the time to chat today about your Shopify store."
+    },
+    {
+      "start": 5.5,
+      "end": 12.8,
+      "text": "So tell me, what's the biggest challenge you face running your Shopify store?"
+    },
+    {
+      "start": 13.1,
+      "end": 28.4,
+      "text": "Honestly, inventory management is killing me. I have products on Amazon and Etsy too, and keeping stock levels synced is a nightmare. I spend like two hours a day just updating inventory manually."
+    },
+    {
+      "start": 29.0,
+      "end": 35.5,
+      "text": "That sounds really frustrating. What have you tried so far to solve this?"
+    },
+    {
+      "start": 36.0,
+      "end": 52.3,
+      "text": "I tried Stocky but it doesn't work with my other channels. I've also looked at Skubana but it's way too expensive for my size store. They wanted like five hundred dollars a month which is insane."
+    },
+    {
+      "start": 53.0,
+      "end": 65.2,
+      "text": "If there was a solution that worked perfectly for multi-channel inventory, what would you be willing to pay for it monthly?"
+    },
+    {
+      "start": 66.0,
+      "end": 78.5,
+      "text": "I'd easily pay thirty to fifty dollars a month for something that just works. Even up to seventy-five if it was really good and saved me those two hours daily."
+    },
+    {
+      "start": 79.0,
+      "end": 88.3,
+      "text": "That makes sense. Are there any other pain points with your store operations?"
+    },
+    {
+      "start": 89.0,
+      "end": 105.8,
+      "text": "Yeah, analytics is another big one. I can't track customer lifetime value at all. I have no idea which customers are actually profitable versus which ones are just buying once with a coupon and never coming back."
+    },
+    {
+      "start": 106.5,
+      "end": 122.1,
+      "text": "I've tried a few analytics apps like Lifetimely and OrderMetrics but they're either too complicated or don't give me the simple answers I need. I just want to know who my best customers are."
+    },
+    {
+      "start": 123.0,
+      "end": 132.5,
+      "text": "Would you pay for better LTV tracking and customer analytics?"
+    },
+    {
+      "start": 133.0,
+      "end": 145.6,
+      "text": "Definitely. I'd pay maybe twenty to thirty dollars a month for good customer analytics. It would help me make better decisions about where to spend my marketing budget."
+    },
+    {
+      "start": 146.0,
+      "end": 155.4,
+      "text": "Great insights. One last question - how big is your team and how many apps do you currently use?"
+    },
+    {
+      "start": 156.0,
+      "end": 168.2,
+      "text": "It's just me and one part-time helper. We use about eight apps right now and I'm paying around two hundred dollars a month total for them. It adds up fast."
+    },
+    {
+      "start": 169.0,
+      "end": 175.5,
+      "text": "Thanks so much for your time. This has been really helpful."
+    }
+  ],
+  "full_text": "Thanks for taking the time to chat today about your Shopify store. So tell me, what's the biggest challenge you face running your Shopify store? Honestly, inventory management is killing me. I have products on Amazon and Etsy too, and keeping stock levels synced is a nightmare. I spend like two hours a day just updating inventory manually. That sounds really frustrating. What have you tried so far to solve this? I tried Stocky but it doesn't work with my other channels. I've also looked at Skubana but it's way too expensive for my size store. They wanted like five hundred dollars a month which is insane. If there was a solution that worked perfectly for multi-channel inventory, what would you be willing to pay for it monthly? I'd easily pay thirty to fifty dollars a month for something that just works. Even up to seventy-five if it was really good and saved me those two hours daily. That makes sense. Are there any other pain points with your store operations? Yeah, analytics is another big one. I can't track customer lifetime value at all. I have no idea which customers are actually profitable versus which ones are just buying once with a coupon and never coming back. I've tried a few analytics apps like Lifetimely and OrderMetrics but they're either too complicated or don't give me the simple answers I need. I just want to know who my best customers are. Would you pay for better LTV tracking and customer analytics? Definitely. I'd pay maybe twenty to thirty dollars a month for good customer analytics. It would help me make better decisions about where to spend my marketing budget. Great insights. One last question - how big is your team and how many apps do you currently use? It's just me and one part-time helper. We use about eight apps right now and I'm paying around two hundred dollars a month total for them. It adds up fast. Thanks so much for your time. This has been really helpful.",
+  "participant_id": "P001"
+}
