@@ -12,9 +12,10 @@
 
 | PRD | File | Focus | Status |
 |-----|------|-------|--------|
-| **Scraping Pipeline** | `.claude/plans/dynamic-chasing-island.md` | Web scraping + LLM classification | ~85% complete |
-| **Interview Research** | `.claude/plans/refactored-wobbling-quokka.md` | Merchant interviews + validation | Code: 100%, Process: 0% |
-| **Visualization Dashboard** | `.claude/plans/dynamic-chasing-island.md` | Dashboard UI for insights visualization | 0% - NEW |
+| **Scraping Pipeline** | `docs/plans/dynamic-chasing-island.md` | Web scraping + LLM classification | ~85% complete |
+| **Interview Research** | `docs/plans/refactored-wobbling-quokka.md` | Merchant interviews + validation | Code: 100%, Process: 0% |
+| **Visualization Dashboard** | `docs/plans/dynamic-chasing-island.md` | Dashboard UI for insights visualization | 0% - NEW |
+| **Deployment & Orchestration** | `docs/plans/deployment-orchestration.md` | AWS EC2, automation, systemd services | NEW |
 
 ---
 
@@ -1050,14 +1051,27 @@ I tried Stocky but it doesn't work with my other channels. I've also looked at S
 
 ## Deployment & Execution Architecture
 
+> **Full deployment documentation:** See [`docs/plans/deployment-orchestration.md`](deployment-orchestration.md) for complete setup instructions, automation scripts, and operational procedures.
+
 ### Overview
 
-The entire Shopifly stack runs on a **single VM**. There are no productionization concerns - this system is designed for personal use by 1-2 people. The VM can be started and stopped as needed.
+The entire Shopifly stack runs on a **single AWS EC2 instance**. There are no productionization concerns - this system is designed for personal use by 1-2 people. The VM can be started and stopped as needed.
+
+### Production Instance
+
+| Property | Value |
+|----------|-------|
+| **Instance ID** | `i-0f05fffd1aba8db0b` |
+| **Type** | t3.xlarge (4 vCPU, 16 GB RAM) |
+| **Public IP** | 54.197.8.56 |
+| **Storage** | 150 GB gp3 |
+| **Region** | us-east-1a |
+| **Dashboard** | http://54.197.8.56:8501 |
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                      SINGLE VM DEPLOYMENT                                    │
-│                      (EC2 / Local Machine)                                   │
+│                 AWS EC2: i-0f05fffd1aba8db0b (t3.xlarge)                     │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                              │
 │  ┌─────────────────────────────────────────────────────────────────────────┐│
