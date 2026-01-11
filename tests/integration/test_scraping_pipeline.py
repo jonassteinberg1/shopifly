@@ -97,28 +97,28 @@ class TestAppStoreScrapingPipeline:
     """Integration tests for App Store scraping pipeline."""
 
     @pytest.fixture
-    def mock_httpx(self):
-        """Create mock httpx client."""
-        with patch("scrapers.appstore.httpx.AsyncClient") as mock:
+    def mock_selenium(self):
+        """Create mock Selenium WebDriver."""
+        with patch("scrapers.appstore.webdriver.Chrome") as mock:
             yield mock
 
     @pytest.mark.asyncio
-    async def test_scrape_reviews_pipeline(self, mock_httpx, sample_app_review_html):
+    async def test_scrape_reviews_pipeline(self, mock_selenium, sample_app_review_html):
         """Test scraping app reviews and processing."""
-        # Set up mock HTTP responses
-        mock_client = AsyncMock()
-        mock_response = MagicMock()
-        mock_response.status_code = 200
-        mock_response.text = f"""
+        # Set up mock Selenium driver with review HTML
+        mock_driver = MagicMock()
+        mock_driver.page_source = f"""
         <html>
         <body>
-            {sample_app_review_html}
+            <div class="lg:tw-col-span-3">
+                <div aria-label="2 out of 5 stars">Rating</div>
+                <div>December 15, 2025 The app crashes frequently when processing large orders.</div>
+            </div>
         </body>
         </html>
         """
-        mock_client.get = AsyncMock(return_value=mock_response)
-        mock_client.aclose = AsyncMock()
-        mock_httpx.return_value = mock_client
+        mock_driver.title = "Shopify App Store"
+        mock_selenium.return_value = mock_driver
 
         scraper = AppStoreScraper()
         scraper.TARGET_APPS = ["test-app"]  # Limit for test
@@ -129,8 +129,8 @@ class TestAppStoreScrapingPipeline:
 
         await scraper.close()
 
-        # Should get the review from our mock HTML
-        assert len(datapoints) >= 0  # May be 0 if review doesn't pass filters
+        # Should get the review from our mock HTML (may be 0 if filters apply)
+        assert len(datapoints) >= 0
 
 
 class TestCommunityScrapingPipeline:
@@ -335,25 +335,22 @@ class TestHealthChecks:
     @pytest.mark.asyncio
     async def test_appstore_health_check_success(self):
         """Test App Store health check success."""
-        with patch("scrapers.appstore.httpx.AsyncClient") as mock_httpx:
-            mock_client = AsyncMock()
-            mock_response = MagicMock()
-            mock_response.status_code = 200
-            mock_client.get = AsyncMock(return_value=mock_response)
-            mock_httpx.return_value = mock_client
+        with patch("scrapers.appstore.webdriver.Chrome") as mock_chrome:
+            mock_driver = MagicMock()
+            mock_driver.title = "Shopify App Store"
+            mock_chrome.return_value = mock_driver
 
             scraper = AppStoreScraper()
             result = await scraper.health_check()
 
             assert result is True
+            scraper._close_driver()
 
     @pytest.mark.asyncio
     async def test_appstore_health_check_failure(self):
         """Test App Store health check failure."""
-        with patch("scrapers.appstore.httpx.AsyncClient") as mock_httpx:
-            mock_client = AsyncMock()
-            mock_client.get = AsyncMock(side_effect=Exception("Connection error"))
-            mock_httpx.return_value = mock_client
+        with patch("scrapers.appstore.webdriver.Chrome") as mock_chrome:
+            mock_chrome.side_effect = Exception("WebDriver error")
 
             scraper = AppStoreScraper()
             result = await scraper.health_check()

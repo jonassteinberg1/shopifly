@@ -337,7 +337,7 @@ class TestFetchPostComments:
 class TestScrapeRedditPosts:
     """Tests for scrape_reddit_posts function."""
 
-    @patch("scrapers.reddit_selenium.httpx.Client")
+    @patch("scrapers.reddit_selenium.requests.Session")
     def test_uses_default_sort_types(self, mock_client_class):
         """Test that default sort types are used."""
         mock_client = MagicMock()
@@ -353,7 +353,7 @@ class TestScrapeRedditPosts:
         # Should have called get for hot, new, top_week (default sort types)
         assert mock_client.get.call_count >= 1
 
-    @patch("scrapers.reddit_selenium.httpx.Client")
+    @patch("scrapers.reddit_selenium.requests.Session")
     def test_deduplicates_by_post_id(self, mock_client_class):
         """Test that duplicate posts are removed."""
         mock_client = MagicMock()
@@ -375,7 +375,7 @@ class TestScrapeRedditPosts:
         # Should only have 2 unique posts from sample XML
         assert len(results) == 2
 
-    @patch("scrapers.reddit_selenium.httpx.Client")
+    @patch("scrapers.reddit_selenium.requests.Session")
     def test_respects_limit(self, mock_client_class):
         """Test that limit is respected."""
         mock_client = MagicMock()
@@ -390,7 +390,7 @@ class TestScrapeRedditPosts:
 
         assert len(results) == 1
 
-    @patch("scrapers.reddit_selenium.httpx.Client")
+    @patch("scrapers.reddit_selenium.requests.Session")
     def test_includes_comments_when_requested(self, mock_client_class):
         """Test that comments are fetched when include_comments=True."""
         mock_client = MagicMock()
@@ -419,7 +419,7 @@ class TestScrapeRedditPosts:
         for post in results:
             assert "comments" in post
 
-    @patch("scrapers.reddit_selenium.httpx.Client")
+    @patch("scrapers.reddit_selenium.requests.Session")
     def test_handles_unknown_sort_type(self, mock_client_class):
         """Test handling of unknown sort type."""
         mock_client = MagicMock()
@@ -463,7 +463,7 @@ class TestScraperClassMethods:
         assert "test_user" in result.author
         assert "abc123" in result.source_id
 
-    @patch("scrapers.reddit_selenium.httpx.Client")
+    @patch("scrapers.reddit_selenium.requests.Session")
     def test_fetch_rss_posts(self, mock_client_class):
         """Test _fetch_rss_posts method."""
         mock_client = MagicMock()

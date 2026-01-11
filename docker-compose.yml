@@ -92,3 +92,18 @@ services:
           print(json.dumps(posts, indent=2))
 
       asyncio.run(main())
+
+  # Streamlit dashboard
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+      - ./data:/app/data
+      - ./.env:/app/.env:ro
+    ports:
+      - "8501:8501"
+    environment:
+      - PYTHONUNBUFFERED=1
+    entrypoint: ["streamlit", "run", "dashboard/app.py", "--server.address", "0.0.0.0", "--server.port", "8501"]
