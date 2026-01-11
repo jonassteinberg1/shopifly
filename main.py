@@ -12,6 +12,7 @@ from rich.table import Table
 
 from scrapers import (
     RedditScraper,
+    RedditSeleniumScraper,
     AppStoreScraper,
     TwitterScraper,
     CommunityScraper,
@@ -70,7 +71,7 @@ async def _scrape(
     scrapers = []
 
     if source is None or source == "reddit":
-        scrapers.append(("Reddit", RedditScraper()))
+        scrapers.append(("Reddit", RedditSeleniumScraper()))
     if source is None or source == "appstore":
         scrapers.append(("App Store", AppStoreScraper()))
     if source is None or source == "twitter":
@@ -324,11 +325,10 @@ async def _health():
 
 
 async def _check_reddit() -> tuple[bool, str]:
-    if not settings.reddit_client_id:
-        return False, "Missing reddit_client_id"
-    scraper = RedditScraper()
+    # Use RSS-based scraper which doesn't require API credentials
+    scraper = RedditSeleniumScraper()
     ok = await scraper.health_check()
-    return ok, "Connected" if ok else "Connection failed"
+    return ok, "Connected (RSS)" if ok else "Connection failed"
 
 
 async def _check_appstore() -> tuple[bool, str]:

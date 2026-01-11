@@ -35,3 +35,4 @@ Thumbs.db
 
 # Data files (local SQLite databases)
 data/*.db
+.claude/settings.local.json

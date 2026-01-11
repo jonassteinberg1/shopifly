@@ -15,7 +15,7 @@ from datetime import datetime
 from html import unescape
 from typing import AsyncIterator
 
-import httpx
+import requests
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
@@ -71,18 +71,15 @@ class RedditSeleniumScraper(BaseScraper):
         self._driver = None
         self._client = None
 
-    def _get_client(self) -> httpx.Client:
-        """Get or create httpx client."""
+    def _get_session(self) -> requests.Session:
+        """Get or create requests session."""
         if self._client is None:
-            self._client = httpx.Client(
-                headers=DEFAULT_HEADERS,
-                follow_redirects=True,
-                timeout=30,
-            )
+            self._client = requests.Session()
+            self._client.headers.update(DEFAULT_HEADERS)
         return self._client
 
     def _close_client(self):
-        """Close httpx client."""
+        """Close requests session."""
         if self._client:
             self._client.close()
             self._client = None
@@ -117,8 +114,8 @@ class RedditSeleniumScraper(BaseScraper):
     async def health_check(self) -> bool:
         """Check if we can connect to Reddit."""
         try:
-            client = self._get_client()
-            resp = client.get(RSS_ENDPOINTS["hot"])
+            session = self._get_session()
+            resp = session.get(RSS_ENDPOINTS["hot"], timeout=30)
             return resp.status_code == 200 and "<feed" in resp.text
         except Exception:
             return False
@@ -146,13 +143,13 @@ class RedditSeleniumScraper(BaseScraper):
         seen_ids = set()
 
         try:
-            client = self._get_client()
+            session = self._get_session()
 
             for sort_type, url in RSS_ENDPOINTS.items():
                 if len(results) >= limit:
                     break
 
-                posts = self._fetch_rss_posts(client, url)
+                posts = self._fetch_rss_posts(session, url)
                 for post in posts:
                     if len(results) >= limit:
                         break
@@ -168,11 +165,11 @@ class RedditSeleniumScraper(BaseScraper):
 
         return results
 
-    def _fetch_rss_posts(self, client: httpx.Client, url: str) -> list[RawDataPoint]:
+    def _fetch_rss_posts(self, session: requests.Session, url: str) -> list[RawDataPoint]:
         """Fetch posts from an RSS endpoint."""
         results = []
         try:
-            resp = client.get(url)
+            resp = session.get(url, timeout=30)
             if resp.status_code != 200:
                 return results
 
@@ -279,7 +276,8 @@ def scrape_reddit_posts(
     results = []
     seen_ids = set()
 
-    client = httpx.Client(headers=DEFAULT_HEADERS, follow_redirects=True, timeout=30)
+    session = requests.Session()
+    session.headers.update(DEFAULT_HEADERS)
 
     try:
         for sort_type in sort_types:
@@ -295,7 +293,7 @@ def scrape_reddit_posts(
             if debug:
                 print(f"Fetching {sort_type} posts...")
 
-            posts = _fetch_rss_simple(client, url, debug)
+            posts = _fetch_rss_simple(session, url, debug)
 
             for post in posts:
                 if len(results) >= limit:
@@ -308,7 +306,7 @@ def scrape_reddit_posts(
                         if debug:
                             print(f"  Fetching comments for: {post['title'][:50]}...")
                         time.sleep(request_delay)
-                        post["comments"] = _fetch_post_comments(client, post["id"], debug)
+                        post["comments"] = _fetch_post_comments(session, post["id"], debug)
                     else:
                         post["comments"] = []
 
@@ -320,17 +318,17 @@ def scrape_reddit_posts(
             print(f"Total posts scraped: {len(results)}")
 
     finally:
-        client.close()
+        session.close()
 
     return results
 
 
-def _fetch_rss_simple(client: httpx.Client, url: str, debug: bool = False) -> list[dict]:
+def _fetch_rss_simple(session: requests.Session, url: str, debug: bool = False) -> list[dict]:
     """Fetch posts from an RSS endpoint."""
     results = []
 
     try:
-        resp = client.get(url)
+        resp = session.get(url, timeout=30)
         if resp.status_code != 200:
             if debug:
                 print(f"  HTTP {resp.status_code} from {url}")
@@ -391,13 +389,13 @@ def _fetch_rss_simple(client: httpx.Client, url: str, debug: bool = False) -> li
     return results
 
 
-def _fetch_post_comments(client: httpx.Client, post_id: str, debug: bool = False) -> list[dict]:
+def _fetch_post_comments(session: requests.Session, post_id: str, debug: bool = False) -> list[dict]:
     """Fetch comments for a specific post."""
     comments = []
     url = f"https://www.reddit.com/r/shopify/comments/{post_id}/.rss"
 
     try:
-        resp = client.get(url)
+        resp = session.get(url, timeout=30)
         if resp.status_code != 200:
             if debug:
                 print(f"    HTTP {resp.status_code} fetching comments")

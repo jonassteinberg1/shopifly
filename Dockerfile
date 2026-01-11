@@ -34,6 +34,12 @@ RUN mkdir -p data
 # Install Python dependencies (including dev dependencies for tests)
 RUN pip install --no-cache-dir -e ".[dev]"
 
+# Install dashboard dependencies
+RUN pip install --no-cache-dir streamlit plotly wordcloud
+
+# Copy dashboard
+COPY dashboard/ dashboard/
+
 # Copy tests
 COPY tests/ tests/
 

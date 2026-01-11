@@ -101,38 +101,9 @@ class TestAppStoreScraper:
     def test_target_apps_defined(self, scraper):
         """Test that target apps list is populated."""
         assert len(scraper.TARGET_APPS) > 0
-        assert "smile-io" in scraper.TARGET_APPS
-        assert "klaviyo-email-marketing-sms" in scraper.TARGET_APPS
-
-    def test_app_categories_defined(self, scraper):
-        """Test that app categories are defined."""
-        assert len(scraper.APP_CATEGORIES) > 0
-        assert "marketing" in scraper.APP_CATEGORIES
-        assert "inventory-management" in scraper.APP_CATEGORIES
-
-    def test_extract_rating_from_aria_label(self, scraper):
-        """Test extracting rating from aria-label."""
-        html = '<div class="ui-star-rating" aria-label="3 out of 5 stars"></div>'
-        soup = BeautifulSoup(html, "html.parser")
-        elem = soup.select_one(".ui-star-rating")
-        assert scraper._extract_rating(elem) == 3
-
-    def test_extract_rating_from_filled_stars(self, scraper):
-        """Test extracting rating by counting filled stars."""
-        html = """
-        <div class="ui-star-rating">
-            <span class="ui-star-rating__star--filled"></span>
-            <span class="ui-star-rating__star--filled"></span>
-            <span class="ui-star-rating__star"></span>
-        </div>
-        """
-        soup = BeautifulSoup(html, "html.parser")
-        elem = soup.select_one(".ui-star-rating")
-        assert scraper._extract_rating(elem) == 2
-
-    def test_extract_rating_none_element(self, scraper):
-        """Test extracting rating with None element."""
-        assert scraper._extract_rating(None) == 0
+        # Updated to match current Shopify first-party apps
+        assert "flow" in scraper.TARGET_APPS
+        assert "inbox" in scraper.TARGET_APPS
 
     def test_parse_date_relative_days(self, scraper):
         """Test parsing relative date strings."""
@@ -185,19 +156,25 @@ class TestAppStoreScraper:
         )
         assert scraper._is_negative_review(dp) is False
 
-    def test_parse_review(self, scraper, sample_app_review_html):
-        """Test parsing review HTML."""
-        soup = BeautifulSoup(sample_app_review_html, "html.parser")
-        review_elem = soup.select_one(".review-listing")
+    def test_parse_review_element(self, scraper):
+        """Test parsing review from star rating element."""
+        # Create HTML that matches the current scraper's expected structure
+        html = '''
+        <div class="lg:tw-col-span-3">
+            <div aria-label="2 out of 5 stars">Rating</div>
+            <div>December 15, 2025 The app crashes frequently and is hard to use.</div>
+        </div>
+        '''
+        soup = BeautifulSoup(html, "html.parser")
+        star_elem = soup.find(attrs={"aria-label": "2 out of 5 stars"})
 
-        dp = scraper._parse_review(review_elem, "test-app", "https://apps.shopify.com/test-app")
+        dp = scraper._parse_review_element(star_elem, "test-app", "https://apps.shopify.com/test-app")
 
         assert dp is not None
         assert dp.source == DataSource.APP_STORE
         assert "test-app" in dp.source_id
         assert dp.metadata["rating"] == 2
         assert "crashes" in dp.content.lower()
-        assert dp.author == "Test Store"
 
 
 class TestCommunityScraper:

@@ -66,7 +66,7 @@ class TestScraperStorageIntegration:
         db_path = tmp_path / "integration_test.db"
         return SQLiteStorage(db_path=str(db_path))
 
-    @patch("scrapers.reddit_selenium.httpx.Client")
+    @patch("scrapers.reddit_selenium.requests.Session")
     def test_scraped_posts_can_be_stored(self, mock_client_class, storage):
         """Test that scraped posts can be saved to storage."""
         mock_client = MagicMock()
@@ -108,7 +108,7 @@ class TestScraperStorageIntegration:
         stats = storage.get_stats()
         assert stats["raw_data_points"] == 2
 
-    @patch("scrapers.reddit_selenium.httpx.Client")
+    @patch("scrapers.reddit_selenium.requests.Session")
     def test_duplicate_posts_not_stored_twice(self, mock_client_class, storage):
         """Test that duplicate posts are handled correctly."""
         mock_client = MagicMock()
@@ -146,7 +146,7 @@ class TestScraperStorageIntegration:
         stats = storage.get_stats()
         assert stats["raw_data_points"] == 2
 
-    @patch("scrapers.reddit_selenium.httpx.Client")
+    @patch("scrapers.reddit_selenium.requests.Session")
     def test_posts_with_comments_stored_correctly(self, mock_client_class, storage):
         """Test that posts with comments are stored with metadata."""
         mock_client = MagicMock()
@@ -207,7 +207,7 @@ class TestScraperClassIntegration:
         db_path = tmp_path / "scraper_class_test.db"
         return SQLiteStorage(db_path=str(db_path))
 
-    @patch("scrapers.reddit_selenium.httpx.Client")
+    @patch("scrapers.reddit_selenium.requests.Session")
     @pytest.mark.asyncio
     async def test_scraper_class_scrape_method(self, mock_client_class, storage):
         """Test the async scrape method of RedditSeleniumScraper."""
@@ -235,7 +235,7 @@ class TestScraperClassIntegration:
         stats = storage.get_stats()
         assert stats["raw_data_points"] == count
 
-    @patch("scrapers.reddit_selenium.httpx.Client")
+    @patch("scrapers.reddit_selenium.requests.Session")
     @pytest.mark.asyncio
     async def test_scraper_health_check(self, mock_client_class):
         """Test the health check method."""
@@ -253,7 +253,7 @@ class TestScraperClassIntegration:
         # Should be healthy with valid RSS response containing <feed
         assert healthy is True
 
-    @patch("scrapers.reddit_selenium.httpx.Client")
+    @patch("scrapers.reddit_selenium.requests.Session")
     @pytest.mark.asyncio
     async def test_scraper_health_check_failure(self, mock_client_class):
         """Test health check when Reddit is down."""
@@ -274,7 +274,7 @@ class TestScraperClassIntegration:
 class TestMultipleSortTypesIntegration:
     """Tests for scraping from multiple sort types."""
 
-    @patch("scrapers.reddit_selenium.httpx.Client")
+    @patch("scrapers.reddit_selenium.requests.Session")
     def test_all_sort_types_queried(self, mock_client_class):
         """Test that all specified sort types are queried."""
         mock_client = MagicMock()
@@ -297,7 +297,7 @@ class TestMultipleSortTypesIntegration:
         # Should have made at least one call per sort type
         assert mock_client.get.call_count >= len(sort_types)
 
-    @patch("scrapers.reddit_selenium.httpx.Client")
+    @patch("scrapers.reddit_selenium.requests.Session")
     def test_stops_early_when_limit_reached(self, mock_client_class):
         """Test that scraping stops when limit is reached."""
         mock_client = MagicMock()
@@ -322,7 +322,7 @@ class TestMultipleSortTypesIntegration:
 class TestCommentsIntegration:
     """Tests for comments scraping integration."""
 
-    @patch("scrapers.reddit_selenium.httpx.Client")
+    @patch("scrapers.reddit_selenium.requests.Session")
     def test_comments_fetched_for_each_post(self, mock_client_class):
         """Test that comments are fetched for each post."""
         mock_client = MagicMock()
@@ -355,7 +355,7 @@ class TestCommentsIntegration:
             assert "comments" in post
             assert isinstance(post["comments"], list)
 
-    @patch("scrapers.reddit_selenium.httpx.Client")
+    @patch("scrapers.reddit_selenium.requests.Session")
     def test_handles_comment_fetch_failure(self, mock_client_class):
         """Test graceful handling of comment fetch failures."""
         mock_client = MagicMock()

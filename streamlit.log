@@ -1,0 +1,705 @@
+
+Collecting usage statistics. To deactivate, set browser.gatherUsageStats to false.
+
+
+  You can now view your Streamlit app in your browser.
+
+  URL: http://0.0.0.0:8501
+
+2026-01-11 01:25:16.112 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+[31m──[0m[31m────────────────────────[0m[31m [0m[1;31mTraceback [0m[1;2;31m(most recent call last)[0m[31m [0m[31m─────────────────────────[0m[31m──[0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/scriptrunner/[0m[1mexe[0m [31m [0m
+[31m [0m [1mc_code.py[0m:128 in exec_func_with_error_handling                                       [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/scriptrunner/[0m[1mscr[0m [31m [0m
+[31m [0m [1mipt_runner.py[0m:669 in code_to_exec                                                    [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/shopifly/dashboard/[0m[1mapp.py[0m:112 in <module>                             [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m   [2m109 [0m[94mif[0m keywords:                                                                   [31m [0m
+[31m [0m   [2m110 [0m[2m│   [0mwordcloud_img = create_wordcloud(keywords)                                 [31m [0m
+[31m [0m   [2m111 [0m[2m│   [0m[94mif[0m wordcloud_img:                                                          [31m [0m
+[31m [0m [31m❱ [0m112 [2m│   │   [0mst.image(wordcloud_img, use_container_width=[94mTrue[0m)                      [31m [0m
+[31m [0m   [2m113 [0m[2m│   [0m[94melse[0m:                                                                      [31m [0m
+[31m [0m   [2m114 [0m[2m│   │   [0mst.info([33m"[0m[33mCould not generate word cloud.[0m[33m"[0m)                              [31m [0m
+[31m [0m   [2m115 [0m[94melse[0m:                                                                          [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/[0m[1mmetrics_util.py[0m: [31m [0m
+[31m [0m 443 in wrapped_func                                                                  [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/[0m[1mimage.py[0m:208 in [31m [0m
+[31m [0m image                                                                                [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:447 in marshall_images                                                           [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:338 in image_to_url                                                              [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:117 in _validate_image_format_string                                             [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:89 in _image_is_gif                                                              [31m [0m
+[31m────────────────────────────────────────────────────────────────────────────────────────[0m
+[1;91mAttributeError: [0m[32m'WordCloud'[0m object has no attribute [32m'format'[0m
+2026-01-11 01:25:17.676 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+[31m──[0m[31m────────────────────────[0m[31m [0m[1;31mTraceback [0m[1;2;31m(most recent call last)[0m[31m [0m[31m─────────────────────────[0m[31m──[0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/scriptrunner/[0m[1mexe[0m [31m [0m
+[31m [0m [1mc_code.py[0m:128 in exec_func_with_error_handling                                       [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/scriptrunner/[0m[1mscr[0m [31m [0m
+[31m [0m [1mipt_runner.py[0m:669 in code_to_exec                                                    [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/shopifly/dashboard/[0m[1mapp.py[0m:112 in <module>                             [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m   [2m109 [0m[94mif[0m keywords:                                                                   [31m [0m
+[31m [0m   [2m110 [0m[2m│   [0mwordcloud_img = create_wordcloud(keywords)                                 [31m [0m
+[31m [0m   [2m111 [0m[2m│   [0m[94mif[0m wordcloud_img:                                                          [31m [0m
+[31m [0m [31m❱ [0m112 [2m│   │   [0mst.image(wordcloud_img, use_container_width=[94mTrue[0m)                      [31m [0m
+[31m [0m   [2m113 [0m[2m│   [0m[94melse[0m:                                                                      [31m [0m
+[31m [0m   [2m114 [0m[2m│   │   [0mst.info([33m"[0m[33mCould not generate word cloud.[0m[33m"[0m)                              [31m [0m
+[31m [0m   [2m115 [0m[94melse[0m:                                                                          [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/[0m[1mmetrics_util.py[0m: [31m [0m
+[31m [0m 443 in wrapped_func                                                                  [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/[0m[1mimage.py[0m:208 in [31m [0m
+[31m [0m image                                                                                [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:447 in marshall_images                                                           [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:338 in image_to_url                                                              [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:117 in _validate_image_format_string                                             [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:89 in _image_is_gif                                                              [31m [0m
+[31m────────────────────────────────────────────────────────────────────────────────────────[0m
+[1;91mAttributeError: [0m[32m'WordCloud'[0m object has no attribute [32m'format'[0m
+2026-01-11 01:25:21.549 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+[31m──[0m[31m────────────────────────[0m[31m [0m[1;31mTraceback [0m[1;2;31m(most recent call last)[0m[31m [0m[31m─────────────────────────[0m[31m──[0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/scriptrunner/[0m[1mexe[0m [31m [0m
+[31m [0m [1mc_code.py[0m:128 in exec_func_with_error_handling                                       [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/scriptrunner/[0m[1mscr[0m [31m [0m
+[31m [0m [1mipt_runner.py[0m:669 in code_to_exec                                                    [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/shopifly/dashboard/[0m[1mapp.py[0m:112 in <module>                             [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m   [2m109 [0m[94mif[0m keywords:                                                                   [31m [0m
+[31m [0m   [2m110 [0m[2m│   [0mwordcloud_img = create_wordcloud(keywords)                                 [31m [0m
+[31m [0m   [2m111 [0m[2m│   [0m[94mif[0m wordcloud_img:                                                          [31m [0m
+[31m [0m [31m❱ [0m112 [2m│   │   [0mst.image(wordcloud_img, use_container_width=[94mTrue[0m)                      [31m [0m
+[31m [0m   [2m113 [0m[2m│   [0m[94melse[0m:                                                                      [31m [0m
+[31m [0m   [2m114 [0m[2m│   │   [0mst.info([33m"[0m[33mCould not generate word cloud.[0m[33m"[0m)                              [31m [0m
+[31m [0m   [2m115 [0m[94melse[0m:                                                                          [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/[0m[1mmetrics_util.py[0m: [31m [0m
+[31m [0m 443 in wrapped_func                                                                  [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/[0m[1mimage.py[0m:208 in [31m [0m
+[31m [0m image                                                                                [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:447 in marshall_images                                                           [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:338 in image_to_url                                                              [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:117 in _validate_image_format_string                                             [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:89 in _image_is_gif                                                              [31m [0m
+[31m────────────────────────────────────────────────────────────────────────────────────────[0m
+[1;91mAttributeError: [0m[32m'WordCloud'[0m object has no attribute [32m'format'[0m
+2026-01-11 01:25:44.416 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+[31m──[0m[31m────────────────────────[0m[31m [0m[1;31mTraceback [0m[1;2;31m(most recent call last)[0m[31m [0m[31m─────────────────────────[0m[31m──[0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/scriptrunner/[0m[1mexe[0m [31m [0m
+[31m [0m [1mc_code.py[0m:128 in exec_func_with_error_handling                                       [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/scriptrunner/[0m[1mscr[0m [31m [0m
+[31m [0m [1mipt_runner.py[0m:669 in code_to_exec                                                    [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/shopifly/dashboard/[0m[1mapp.py[0m:112 in <module>                             [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m   [2m109 [0m[94mif[0m keywords:                                                                   [31m [0m
+[31m [0m   [2m110 [0m[2m│   [0mwordcloud_img = create_wordcloud(keywords)                                 [31m [0m
+[31m [0m   [2m111 [0m[2m│   [0m[94mif[0m wordcloud_img:                                                          [31m [0m
+[31m [0m [31m❱ [0m112 [2m│   │   [0mst.image(wordcloud_img, use_container_width=[94mTrue[0m)                      [31m [0m
+[31m [0m   [2m113 [0m[2m│   [0m[94melse[0m:                                                                      [31m [0m
+[31m [0m   [2m114 [0m[2m│   │   [0mst.info([33m"[0m[33mCould not generate word cloud.[0m[33m"[0m)                              [31m [0m
+[31m [0m   [2m115 [0m[94melse[0m:                                                                          [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/[0m[1mmetrics_util.py[0m: [31m [0m
+[31m [0m 443 in wrapped_func                                                                  [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/[0m[1mimage.py[0m:208 in [31m [0m
+[31m [0m image                                                                                [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:447 in marshall_images                                                           [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:338 in image_to_url                                                              [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:117 in _validate_image_format_string                                             [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:89 in _image_is_gif                                                              [31m [0m
+[31m────────────────────────────────────────────────────────────────────────────────────────[0m
+[1;91mAttributeError: [0m[32m'WordCloud'[0m object has no attribute [32m'format'[0m
+2026-01-11 01:25:46.416 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+[31m──[0m[31m────────────────────────[0m[31m [0m[1;31mTraceback [0m[1;2;31m(most recent call last)[0m[31m [0m[31m─────────────────────────[0m[31m──[0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/scriptrunner/[0m[1mexe[0m [31m [0m
+[31m [0m [1mc_code.py[0m:128 in exec_func_with_error_handling                                       [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/scriptrunner/[0m[1mscr[0m [31m [0m
+[31m [0m [1mipt_runner.py[0m:669 in code_to_exec                                                    [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/shopifly/dashboard/[0m[1mapp.py[0m:112 in <module>                             [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m   [2m109 [0m[94mif[0m keywords:                                                                   [31m [0m
+[31m [0m   [2m110 [0m[2m│   [0mwordcloud_img = create_wordcloud(keywords)                                 [31m [0m
+[31m [0m   [2m111 [0m[2m│   [0m[94mif[0m wordcloud_img:                                                          [31m [0m
+[31m [0m [31m❱ [0m112 [2m│   │   [0mst.image(wordcloud_img, use_container_width=[94mTrue[0m)                      [31m [0m
+[31m [0m   [2m113 [0m[2m│   [0m[94melse[0m:                                                                      [31m [0m
+[31m [0m   [2m114 [0m[2m│   │   [0mst.info([33m"[0m[33mCould not generate word cloud.[0m[33m"[0m)                              [31m [0m
+[31m [0m   [2m115 [0m[94melse[0m:                                                                          [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/[0m[1mmetrics_util.py[0m: [31m [0m
+[31m [0m 443 in wrapped_func                                                                  [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/[0m[1mimage.py[0m:208 in [31m [0m
+[31m [0m image                                                                                [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:447 in marshall_images                                                           [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:338 in image_to_url                                                              [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:117 in _validate_image_format_string                                             [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:89 in _image_is_gif                                                              [31m [0m
+[31m────────────────────────────────────────────────────────────────────────────────────────[0m
+[1;91mAttributeError: [0m[32m'WordCloud'[0m object has no attribute [32m'format'[0m
+2026-01-11 01:25:48.509 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+[31m──[0m[31m────────────────────────[0m[31m [0m[1;31mTraceback [0m[1;2;31m(most recent call last)[0m[31m [0m[31m─────────────────────────[0m[31m──[0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/scriptrunner/[0m[1mexe[0m [31m [0m
+[31m [0m [1mc_code.py[0m:128 in exec_func_with_error_handling                                       [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/scriptrunner/[0m[1mscr[0m [31m [0m
+[31m [0m [1mipt_runner.py[0m:669 in code_to_exec                                                    [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/shopifly/dashboard/[0m[1mapp.py[0m:112 in <module>                             [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m   [2m109 [0m[94mif[0m keywords:                                                                   [31m [0m
+[31m [0m   [2m110 [0m[2m│   [0mwordcloud_img = create_wordcloud(keywords)                                 [31m [0m
+[31m [0m   [2m111 [0m[2m│   [0m[94mif[0m wordcloud_img:                                                          [31m [0m
+[31m [0m [31m❱ [0m112 [2m│   │   [0mst.image(wordcloud_img, use_container_width=[94mTrue[0m)                      [31m [0m
+[31m [0m   [2m113 [0m[2m│   [0m[94melse[0m:                                                                      [31m [0m
+[31m [0m   [2m114 [0m[2m│   │   [0mst.info([33m"[0m[33mCould not generate word cloud.[0m[33m"[0m)                              [31m [0m
+[31m [0m   [2m115 [0m[94melse[0m:                                                                          [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/[0m[1mmetrics_util.py[0m: [31m [0m
+[31m [0m 443 in wrapped_func                                                                  [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/[0m[1mimage.py[0m:208 in [31m [0m
+[31m [0m image                                                                                [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:447 in marshall_images                                                           [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:338 in image_to_url                                                              [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:117 in _validate_image_format_string                                             [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:89 in _image_is_gif                                                              [31m [0m
+[31m────────────────────────────────────────────────────────────────────────────────────────[0m
+[1;91mAttributeError: [0m[32m'WordCloud'[0m object has no attribute [32m'format'[0m
+2026-01-11 01:27:59.898 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+[31m──[0m[31m────────────────────────[0m[31m [0m[1;31mTraceback [0m[1;2;31m(most recent call last)[0m[31m [0m[31m─────────────────────────[0m[31m──[0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/scriptrunner/[0m[1mexe[0m [31m [0m
+[31m [0m [1mc_code.py[0m:128 in exec_func_with_error_handling                                       [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/scriptrunner/[0m[1mscr[0m [31m [0m
+[31m [0m [1mipt_runner.py[0m:669 in code_to_exec                                                    [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/shopifly/dashboard/[0m[1mapp.py[0m:112 in <module>                             [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m   [2m109 [0m[94mif[0m keywords:                                                                   [31m [0m
+[31m [0m   [2m110 [0m[2m│   [0mwordcloud_img = create_wordcloud(keywords)                                 [31m [0m
+[31m [0m   [2m111 [0m[2m│   [0m[94mif[0m wordcloud_img:                                                          [31m [0m
+[31m [0m [31m❱ [0m112 [2m│   │   [0mst.image(wordcloud_img, use_container_width=[94mTrue[0m)                      [31m [0m
+[31m [0m   [2m113 [0m[2m│   [0m[94melse[0m:                                                                      [31m [0m
+[31m [0m   [2m114 [0m[2m│   │   [0mst.info([33m"[0m[33mCould not generate word cloud.[0m[33m"[0m)                              [31m [0m
+[31m [0m   [2m115 [0m[94melse[0m:                                                                          [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/[0m[1mmetrics_util.py[0m: [31m [0m
+[31m [0m 443 in wrapped_func                                                                  [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/[0m[1mimage.py[0m:208 in [31m [0m
+[31m [0m image                                                                                [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:447 in marshall_images                                                           [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:338 in image_to_url                                                              [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:117 in _validate_image_format_string                                             [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:89 in _image_is_gif                                                              [31m [0m
+[31m────────────────────────────────────────────────────────────────────────────────────────[0m
+[1;91mAttributeError: [0m[32m'WordCloud'[0m object has no attribute [32m'format'[0m
+2026-01-11 01:29:50.524 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+[31m──[0m[31m────────────────────────[0m[31m [0m[1;31mTraceback [0m[1;2;31m(most recent call last)[0m[31m [0m[31m─────────────────────────[0m[31m──[0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/scriptrunner/[0m[1mexe[0m [31m [0m
+[31m [0m [1mc_code.py[0m:128 in exec_func_with_error_handling                                       [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/scriptrunner/[0m[1mscr[0m [31m [0m
+[31m [0m [1mipt_runner.py[0m:669 in code_to_exec                                                    [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/shopifly/dashboard/[0m[1mapp.py[0m:112 in <module>                             [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m   [2m109 [0m[94mif[0m keywords:                                                                   [31m [0m
+[31m [0m   [2m110 [0m[2m│   [0mwordcloud_img = create_wordcloud(keywords)                                 [31m [0m
+[31m [0m   [2m111 [0m[2m│   [0m[94mif[0m wordcloud_img:                                                          [31m [0m
+[31m [0m [31m❱ [0m112 [2m│   │   [0mst.image(wordcloud_img, use_container_width=[94mTrue[0m)                      [31m [0m
+[31m [0m   [2m113 [0m[2m│   [0m[94melse[0m:                                                                      [31m [0m
+[31m [0m   [2m114 [0m[2m│   │   [0mst.info([33m"[0m[33mCould not generate word cloud.[0m[33m"[0m)                              [31m [0m
+[31m [0m   [2m115 [0m[94melse[0m:                                                                          [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/[0m[1mmetrics_util.py[0m: [31m [0m
+[31m [0m 443 in wrapped_func                                                                  [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/[0m[1mimage.py[0m:208 in [31m [0m
+[31m [0m image                                                                                [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:447 in marshall_images                                                           [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:338 in image_to_url                                                              [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:117 in _validate_image_format_string                                             [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:89 in _image_is_gif                                                              [31m [0m
+[31m────────────────────────────────────────────────────────────────────────────────────────[0m
+[1;91mAttributeError: [0m[32m'WordCloud'[0m object has no attribute [32m'format'[0m
+2026-01-11 01:30:21.015 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+[31m──[0m[31m────────────────────────[0m[31m [0m[1;31mTraceback [0m[1;2;31m(most recent call last)[0m[31m [0m[31m─────────────────────────[0m[31m──[0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/scriptrunner/[0m[1mexe[0m [31m [0m
+[31m [0m [1mc_code.py[0m:128 in exec_func_with_error_handling                                       [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/scriptrunner/[0m[1mscr[0m [31m [0m
+[31m [0m [1mipt_runner.py[0m:669 in code_to_exec                                                    [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/shopifly/dashboard/[0m[1mapp.py[0m:112 in <module>                             [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m   [2m109 [0m[94mif[0m keywords:                                                                   [31m [0m
+[31m [0m   [2m110 [0m[2m│   [0mwordcloud_img = create_wordcloud(keywords)                                 [31m [0m
+[31m [0m   [2m111 [0m[2m│   [0m[94mif[0m wordcloud_img:                                                          [31m [0m
+[31m [0m [31m❱ [0m112 [2m│   │   [0mst.image(wordcloud_img, use_container_width=[94mTrue[0m)                      [31m [0m
+[31m [0m   [2m113 [0m[2m│   [0m[94melse[0m:                                                                      [31m [0m
+[31m [0m   [2m114 [0m[2m│   │   [0mst.info([33m"[0m[33mCould not generate word cloud.[0m[33m"[0m)                              [31m [0m
+[31m [0m   [2m115 [0m[94melse[0m:                                                                          [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/[0m[1mmetrics_util.py[0m: [31m [0m
+[31m [0m 443 in wrapped_func                                                                  [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/[0m[1mimage.py[0m:208 in [31m [0m
+[31m [0m image                                                                                [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:447 in marshall_images                                                           [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:338 in image_to_url                                                              [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:117 in _validate_image_format_string                                             [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:89 in _image_is_gif                                                              [31m [0m
+[31m────────────────────────────────────────────────────────────────────────────────────────[0m
+[1;91mAttributeError: [0m[32m'WordCloud'[0m object has no attribute [32m'format'[0m
+2026-01-11 01:32:43.187 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+[31m──[0m[31m────────────────────────[0m[31m [0m[1;31mTraceback [0m[1;2;31m(most recent call last)[0m[31m [0m[31m─────────────────────────[0m[31m──[0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/scriptrunner/[0m[1mexe[0m [31m [0m
+[31m [0m [1mc_code.py[0m:128 in exec_func_with_error_handling                                       [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/scriptrunner/[0m[1mscr[0m [31m [0m
+[31m [0m [1mipt_runner.py[0m:669 in code_to_exec                                                    [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/shopifly/dashboard/[0m[1mapp.py[0m:112 in <module>                             [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m   [2m109 [0m[94mif[0m keywords:                                                                   [31m [0m
+[31m [0m   [2m110 [0m[2m│   [0mwordcloud_img = create_wordcloud(keywords)                                 [31m [0m
+[31m [0m   [2m111 [0m[2m│   [0m[94mif[0m wordcloud_img:                                                          [31m [0m
+[31m [0m [31m❱ [0m112 [2m│   │   [0mst.image(wordcloud_img, use_container_width=[94mTrue[0m)                      [31m [0m
+[31m [0m   [2m113 [0m[2m│   [0m[94melse[0m:                                                                      [31m [0m
+[31m [0m   [2m114 [0m[2m│   │   [0mst.info([33m"[0m[33mCould not generate word cloud.[0m[33m"[0m)                              [31m [0m
+[31m [0m   [2m115 [0m[94melse[0m:                                                                          [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/[0m[1mmetrics_util.py[0m: [31m [0m
+[31m [0m 443 in wrapped_func                                                                  [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/[0m[1mimage.py[0m:208 in [31m [0m
+[31m [0m image                                                                                [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:447 in marshall_images                                                           [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:338 in image_to_url                                                              [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:117 in _validate_image_format_string                                             [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:89 in _image_is_gif                                                              [31m [0m
+[31m────────────────────────────────────────────────────────────────────────────────────────[0m
+[1;91mAttributeError: [0m[32m'WordCloud'[0m object has no attribute [32m'format'[0m
+2026-01-11 01:40:05.156 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+[31m──[0m[31m────────────────────────[0m[31m [0m[1;31mTraceback [0m[1;2;31m(most recent call last)[0m[31m [0m[31m─────────────────────────[0m[31m──[0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/scriptrunner/[0m[1mexe[0m [31m [0m
+[31m [0m [1mc_code.py[0m:128 in exec_func_with_error_handling                                       [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/scriptrunner/[0m[1mscr[0m [31m [0m
+[31m [0m [1mipt_runner.py[0m:669 in code_to_exec                                                    [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/shopifly/dashboard/[0m[1mapp.py[0m:112 in <module>                             [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m   [2m109 [0m[94mif[0m keywords:                                                                   [31m [0m
+[31m [0m   [2m110 [0m[2m│   [0mwordcloud_img = create_wordcloud(keywords)                                 [31m [0m
+[31m [0m   [2m111 [0m[2m│   [0m[94mif[0m wordcloud_img:                                                          [31m [0m
+[31m [0m [31m❱ [0m112 [2m│   │   [0mst.image(wordcloud_img, use_container_width=[94mTrue[0m)                      [31m [0m
+[31m [0m   [2m113 [0m[2m│   [0m[94melse[0m:                                                                      [31m [0m
+[31m [0m   [2m114 [0m[2m│   │   [0mst.info([33m"[0m[33mCould not generate word cloud.[0m[33m"[0m)                              [31m [0m
+[31m [0m   [2m115 [0m[94melse[0m:                                                                          [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/[0m[1mmetrics_util.py[0m: [31m [0m
+[31m [0m 443 in wrapped_func                                                                  [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/[0m[1mimage.py[0m:208 in [31m [0m
+[31m [0m image                                                                                [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:447 in marshall_images                                                           [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:338 in image_to_url                                                              [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:117 in _validate_image_format_string                                             [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:89 in _image_is_gif                                                              [31m [0m
+[31m────────────────────────────────────────────────────────────────────────────────────────[0m
+[1;91mAttributeError: [0m[32m'WordCloud'[0m object has no attribute [32m'format'[0m
+2026-01-11 01:40:08.047 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+[31m──[0m[31m────────────────────────[0m[31m [0m[1;31mTraceback [0m[1;2;31m(most recent call last)[0m[31m [0m[31m─────────────────────────[0m[31m──[0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/scriptrunner/[0m[1mexe[0m [31m [0m
+[31m [0m [1mc_code.py[0m:128 in exec_func_with_error_handling                                       [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/scriptrunner/[0m[1mscr[0m [31m [0m
+[31m [0m [1mipt_runner.py[0m:669 in code_to_exec                                                    [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/shopifly/dashboard/[0m[1mapp.py[0m:112 in <module>                             [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m   [2m109 [0m[94mif[0m keywords:                                                                   [31m [0m
+[31m [0m   [2m110 [0m[2m│   [0mwordcloud_img = create_wordcloud(keywords)                                 [31m [0m
+[31m [0m   [2m111 [0m[2m│   [0m[94mif[0m wordcloud_img:                                                          [31m [0m
+[31m [0m [31m❱ [0m112 [2m│   │   [0mst.image(wordcloud_img, use_container_width=[94mTrue[0m)                      [31m [0m
+[31m [0m   [2m113 [0m[2m│   [0m[94melse[0m:                                                                      [31m [0m
+[31m [0m   [2m114 [0m[2m│   │   [0mst.info([33m"[0m[33mCould not generate word cloud.[0m[33m"[0m)                              [31m [0m
+[31m [0m   [2m115 [0m[94melse[0m:                                                                          [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/[0m[1mmetrics_util.py[0m: [31m [0m
+[31m [0m 443 in wrapped_func                                                                  [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/[0m[1mimage.py[0m:208 in [31m [0m
+[31m [0m image                                                                                [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:447 in marshall_images                                                           [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:338 in image_to_url                                                              [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:117 in _validate_image_format_string                                             [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:89 in _image_is_gif                                                              [31m [0m
+[31m────────────────────────────────────────────────────────────────────────────────────────[0m
+[1;91mAttributeError: [0m[32m'WordCloud'[0m object has no attribute [32m'format'[0m
+2026-01-11 01:50:26.382 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+[31m──[0m[31m────────────────────────[0m[31m [0m[1;31mTraceback [0m[1;2;31m(most recent call last)[0m[31m [0m[31m─────────────────────────[0m[31m──[0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/scriptrunner/[0m[1mexe[0m [31m [0m
+[31m [0m [1mc_code.py[0m:128 in exec_func_with_error_handling                                       [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/scriptrunner/[0m[1mscr[0m [31m [0m
+[31m [0m [1mipt_runner.py[0m:669 in code_to_exec                                                    [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/shopifly/dashboard/[0m[1mapp.py[0m:112 in <module>                             [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m   [2m109 [0m[94mif[0m keywords:                                                                   [31m [0m
+[31m [0m   [2m110 [0m[2m│   [0mwordcloud_img = create_wordcloud(keywords)                                 [31m [0m
+[31m [0m   [2m111 [0m[2m│   [0m[94mif[0m wordcloud_img:                                                          [31m [0m
+[31m [0m [31m❱ [0m112 [2m│   │   [0mst.image(wordcloud_img, use_container_width=[94mTrue[0m)                      [31m [0m
+[31m [0m   [2m113 [0m[2m│   [0m[94melse[0m:                                                                      [31m [0m
+[31m [0m   [2m114 [0m[2m│   │   [0mst.info([33m"[0m[33mCould not generate word cloud.[0m[33m"[0m)                              [31m [0m
+[31m [0m   [2m115 [0m[94melse[0m:                                                                          [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/[0m[1mmetrics_util.py[0m: [31m [0m
+[31m [0m 443 in wrapped_func                                                                  [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/[0m[1mimage.py[0m:208 in [31m [0m
+[31m [0m image                                                                                [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:447 in marshall_images                                                           [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:338 in image_to_url                                                              [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:117 in _validate_image_format_string                                             [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:89 in _image_is_gif                                                              [31m [0m
+[31m────────────────────────────────────────────────────────────────────────────────────────[0m
+[1;91mAttributeError: [0m[32m'WordCloud'[0m object has no attribute [32m'format'[0m
+2026-01-11 02:03:21.315 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+[31m──[0m[31m────────────────────────[0m[31m [0m[1;31mTraceback [0m[1;2;31m(most recent call last)[0m[31m [0m[31m─────────────────────────[0m[31m──[0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/scriptrunner/[0m[1mexe[0m [31m [0m
+[31m [0m [1mc_code.py[0m:128 in exec_func_with_error_handling                                       [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/scriptrunner/[0m[1mscr[0m [31m [0m
+[31m [0m [1mipt_runner.py[0m:669 in code_to_exec                                                    [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/shopifly/dashboard/[0m[1mapp.py[0m:112 in <module>                             [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m   [2m109 [0m[94mif[0m keywords:                                                                   [31m [0m
+[31m [0m   [2m110 [0m[2m│   [0mwordcloud_img = create_wordcloud(keywords)                                 [31m [0m
+[31m [0m   [2m111 [0m[2m│   [0m[94mif[0m wordcloud_img:                                                          [31m [0m
+[31m [0m [31m❱ [0m112 [2m│   │   [0mst.image(wordcloud_img, use_container_width=[94mTrue[0m)                      [31m [0m
+[31m [0m   [2m113 [0m[2m│   [0m[94melse[0m:                                                                      [31m [0m
+[31m [0m   [2m114 [0m[2m│   │   [0mst.info([33m"[0m[33mCould not generate word cloud.[0m[33m"[0m)                              [31m [0m
+[31m [0m   [2m115 [0m[94melse[0m:                                                                          [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/[0m[1mmetrics_util.py[0m: [31m [0m
+[31m [0m 443 in wrapped_func                                                                  [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/[0m[1mimage.py[0m:208 in [31m [0m
+[31m [0m image                                                                                [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:447 in marshall_images                                                           [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:338 in image_to_url                                                              [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:117 in _validate_image_format_string                                             [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:89 in _image_is_gif                                                              [31m [0m
+[31m────────────────────────────────────────────────────────────────────────────────────────[0m
+[1;91mAttributeError: [0m[32m'WordCloud'[0m object has no attribute [32m'format'[0m
+2026-01-11 04:23:02.884 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+[31m──[0m[31m────────────────────────[0m[31m [0m[1;31mTraceback [0m[1;2;31m(most recent call last)[0m[31m [0m[31m─────────────────────────[0m[31m──[0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/scriptrunner/[0m[1mexe[0m [31m [0m
+[31m [0m [1mc_code.py[0m:128 in exec_func_with_error_handling                                       [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/scriptrunner/[0m[1mscr[0m [31m [0m
+[31m [0m [1mipt_runner.py[0m:669 in code_to_exec                                                    [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/shopifly/dashboard/[0m[1mapp.py[0m:112 in <module>                             [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m   [2m109 [0m[94mif[0m keywords:                                                                   [31m [0m
+[31m [0m   [2m110 [0m[2m│   [0mwordcloud_img = create_wordcloud(keywords)                                 [31m [0m
+[31m [0m   [2m111 [0m[2m│   [0m[94mif[0m wordcloud_img:                                                          [31m [0m
+[31m [0m [31m❱ [0m112 [2m│   │   [0mst.image(wordcloud_img, use_container_width=[94mTrue[0m)                      [31m [0m
+[31m [0m   [2m113 [0m[2m│   [0m[94melse[0m:                                                                      [31m [0m
+[31m [0m   [2m114 [0m[2m│   │   [0mst.info([33m"[0m[33mCould not generate word cloud.[0m[33m"[0m)                              [31m [0m
+[31m [0m   [2m115 [0m[94melse[0m:                                                                          [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/[0m[1mmetrics_util.py[0m: [31m [0m
+[31m [0m 443 in wrapped_func                                                                  [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/[0m[1mimage.py[0m:208 in [31m [0m
+[31m [0m image                                                                                [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:447 in marshall_images                                                           [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:338 in image_to_url                                                              [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:117 in _validate_image_format_string                                             [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:89 in _image_is_gif                                                              [31m [0m
+[31m────────────────────────────────────────────────────────────────────────────────────────[0m
+[1;91mAttributeError: [0m[32m'WordCloud'[0m object has no attribute [32m'format'[0m
+2026-01-11 06:35:22.664 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+[31m──[0m[31m────────────────────────[0m[31m [0m[1;31mTraceback [0m[1;2;31m(most recent call last)[0m[31m [0m[31m─────────────────────────[0m[31m──[0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/scriptrunner/[0m[1mexe[0m [31m [0m
+[31m [0m [1mc_code.py[0m:128 in exec_func_with_error_handling                                       [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/scriptrunner/[0m[1mscr[0m [31m [0m
+[31m [0m [1mipt_runner.py[0m:669 in code_to_exec                                                    [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/shopifly/dashboard/[0m[1mapp.py[0m:112 in <module>                             [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m   [2m109 [0m[94mif[0m keywords:                                                                   [31m [0m
+[31m [0m   [2m110 [0m[2m│   [0mwordcloud_img = create_wordcloud(keywords)                                 [31m [0m
+[31m [0m   [2m111 [0m[2m│   [0m[94mif[0m wordcloud_img:                                                          [31m [0m
+[31m [0m [31m❱ [0m112 [2m│   │   [0mst.image(wordcloud_img, use_container_width=[94mTrue[0m)                      [31m [0m
+[31m [0m   [2m113 [0m[2m│   [0m[94melse[0m:                                                                      [31m [0m
+[31m [0m   [2m114 [0m[2m│   │   [0mst.info([33m"[0m[33mCould not generate word cloud.[0m[33m"[0m)                              [31m [0m
+[31m [0m   [2m115 [0m[94melse[0m:                                                                          [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/[0m[1mmetrics_util.py[0m: [31m [0m
+[31m [0m 443 in wrapped_func                                                                  [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/[0m[1mimage.py[0m:208 in [31m [0m
+[31m [0m image                                                                                [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:447 in marshall_images                                                           [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:338 in image_to_url                                                              [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:117 in _validate_image_format_string                                             [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:89 in _image_is_gif                                                              [31m [0m
+[31m────────────────────────────────────────────────────────────────────────────────────────[0m
+[1;91mAttributeError: [0m[32m'WordCloud'[0m object has no attribute [32m'format'[0m
+2026-01-11 06:35:51.699 Please replace `use_container_width` with `width`.
+
+`use_container_width` will be removed after 2025-12-31.
+
+For `use_container_width=True`, use `width='stretch'`. For `use_container_width=False`, use `width='content'`.
+[31m──[0m[31m────────────────────────[0m[31m [0m[1;31mTraceback [0m[1;2;31m(most recent call last)[0m[31m [0m[31m─────────────────────────[0m[31m──[0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/scriptrunner/[0m[1mexe[0m [31m [0m
+[31m [0m [1mc_code.py[0m:128 in exec_func_with_error_handling                                       [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/scriptrunner/[0m[1mscr[0m [31m [0m
+[31m [0m [1mipt_runner.py[0m:669 in code_to_exec                                                    [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/shopifly/dashboard/[0m[1mapp.py[0m:112 in <module>                             [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m   [2m109 [0m[94mif[0m keywords:                                                                   [31m [0m
+[31m [0m   [2m110 [0m[2m│   [0mwordcloud_img = create_wordcloud(keywords)                                 [31m [0m
+[31m [0m   [2m111 [0m[2m│   [0m[94mif[0m wordcloud_img:                                                          [31m [0m
+[31m [0m [31m❱ [0m112 [2m│   │   [0mst.image(wordcloud_img, use_container_width=[94mTrue[0m)                      [31m [0m
+[31m [0m   [2m113 [0m[2m│   [0m[94melse[0m:                                                                      [31m [0m
+[31m [0m   [2m114 [0m[2m│   │   [0mst.info([33m"[0m[33mCould not generate word cloud.[0m[33m"[0m)                              [31m [0m
+[31m [0m   [2m115 [0m[94melse[0m:                                                                          [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/runtime/[0m[1mmetrics_util.py[0m: [31m [0m
+[31m [0m 443 in wrapped_func                                                                  [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/[0m[1mimage.py[0m:208 in [31m [0m
+[31m [0m image                                                                                [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:447 in marshall_images                                                           [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:338 in image_to_url                                                              [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:117 in _validate_image_format_string                                             [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/ec2-user/.local/lib/python3.9/site-packages/streamlit/elements/lib/[0m[1mimage_utils[0m [31m [0m
+[31m [0m [1m.py[0m:89 in _image_is_gif                                                              [31m [0m
+[31m────────────────────────────────────────────────────────────────────────────────────────[0m
+[1;91mAttributeError: [0m[32m'WordCloud'[0m object has no attribute [32m'format'[0m
